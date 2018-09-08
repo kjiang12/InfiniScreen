@@ -54,9 +54,12 @@ public class HostActivity extends AppCompatActivity {
 
 
         connectionsClient = Nearby.getConnectionsClient(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         startAdvertising();
-
     }
 
     @Override
