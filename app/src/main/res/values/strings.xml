@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ScreenExtender</string>
     <string name="title">Pixel Phones</string>
+    <string name="join_text">Searching for host. Please place phone close to the host.</string>
 </resources>
