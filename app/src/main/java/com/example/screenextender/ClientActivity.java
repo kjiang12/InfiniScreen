@@ -80,7 +80,7 @@ public class ClientActivity extends AppCompatActivity {
         connectionsClient = Nearby.getConnectionsClient(this);
 
 
-        startDiscovery();
+
 
 
         /*Button button = findViewById(R.id.test_button);
@@ -121,7 +121,7 @@ public class ClientActivity extends AppCompatActivity {
                     if (result.getStatus().isSuccess()) {
                         Log.i(TAG, "onConnectionResult: connection successful");
 
-                        ClientActivity.this.setCompleted(endpointId);
+                        this.setCompleted(endpointId);
                         //opponentEndpointId = endpointId;
                         //setOpponentName(opponentName);
                         //setStatusText(getString(R.string.status_connected));
@@ -139,7 +139,7 @@ public class ClientActivity extends AppCompatActivity {
             };
 
     protected void onFinishInflate(){
-
+        startDiscovery();
     }
     
     protected void setCompleted(String value){
