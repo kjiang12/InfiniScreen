@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{permissionName}, permissionRequestCode);
     }
 
-    protected void switchToHost(View v){
+    public void switchToHost(View v){
         Intent intent = new Intent(this, VideoCropActivity.class);
         Bundle b = new Bundle();
         b.putFloat("xOrigin", 0.5f);
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void switchToClient(View v){
+    public void switchToClient(View v){
         Intent intent = new Intent(this, ClientActivity.class);
         startActivity(intent);
     }
