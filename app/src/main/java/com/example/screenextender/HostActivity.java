@@ -9,6 +9,8 @@ import com.google.android.gms.nearby.messages.Message;
 
 
 public class HostActivity extends AppCompatActivity {
+    Message mMessage;
+
     @Override
     protected void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
@@ -18,7 +20,18 @@ public class HostActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Message mMessage = new Message("TESTVOID".getBytes());
+    }
+
+    @Override
+    protected void onStop() {
+        if(mMessage != null){
+            Nearby.getMessagesClient(this).unpublish(mMessage);
+        }
+        super.onStop();
+    }
+
+    protected void sendMessage(String text){
+        mMessage = new Message(text.getBytes());
         Nearby.getMessagesClient(this).publish(mMessage);
     }
 }
