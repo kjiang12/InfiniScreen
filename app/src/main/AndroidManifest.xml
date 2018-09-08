@@ -10,6 +10,17 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+<<<<<<< HEAD
+=======
+    <!-- Required for Nearby Connections -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+>>>>>>> b1804f2d97b30f06df4583a8c18229694be229ae
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,17 +28,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity android:name=".VideoCropActivity">
+=======
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+>>>>>>> b1804f2d97b30f06df4583a8c18229694be229ae
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
             android:name=".hostActivity"
             android:label="@string/title_activity_host"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+=======
+        <activity android:name=".ClientActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+>>>>>>> b1804f2d97b30f06df4583a8c18229694be229ae
     </application>
 
 </manifest>

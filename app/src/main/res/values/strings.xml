@@ -3,5 +3,8 @@
     <string name="Original_Video_Size">Original Video Size</string>
     <string name="title">Pixel Phones</string>
     <string name="join_text">Searching for host. Please place phone close to the host.</string>
+<<<<<<< HEAD
     <string name="title_activity_host">hostActivity</string>
+=======
+>>>>>>> b1804f2d97b30f06df4583a8c18229694be229ae
 </resources>
