@@ -1,4 +1,6 @@
-# Built application files
+.idea/modules.xml
+
+`# Built application files
 *.apk
 *.ap_
 
@@ -41,7 +43,10 @@ captures/
 .idea/dictionaries
 .idea/libraries
 .idea/caches
-
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
 # Keystore files
 # Uncomment the following line if you do not want to check your keystore files in.
 #*.jks

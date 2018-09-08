@@ -1,5 +1,6 @@
 package com.example.screenextender;
-
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -14,17 +15,18 @@ public class MainActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         //Remove notification bar
-       // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_join);
     }
 
     public void joinCall() {
         setContentView(R.layout.activity_join);
     }
     public void hostCall() {
-        setContentView(R.layout.activity_host);
-
-
+        //setContentView(R.layout.activity_host);
+        Intent intent = new Intent(this, hostActivity.class);
+        startActivity(intent);
     }
+
 }
