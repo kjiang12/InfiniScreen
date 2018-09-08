@@ -98,8 +98,6 @@ public class hostActivity extends AppCompatActivity {
                     if (result.getStatus().isSuccess()) {
                         Log.i(TAG, "onConnectionResult: connection successful");
 
-                        connectionsClient.stopDiscovery();
-                        connectionsClient.stopAdvertising();
 
                     } else {
                         Log.i(TAG, "onConnectionResult: connection failed");
