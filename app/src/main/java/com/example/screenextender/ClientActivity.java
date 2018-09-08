@@ -94,6 +94,7 @@ public class ClientActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         connectionsClient.stopDiscovery();
+        connectionsClient.stopAllEndpoints();
         Log.i(TAG, "onConnectionResult: stop discovering hosts");
     }
 

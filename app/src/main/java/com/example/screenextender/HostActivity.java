@@ -72,6 +72,7 @@ public class HostActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         connectionsClient.stopAdvertising();
+        connectionsClient.stopAllEndpoints();
     }
 
     private void startAdvertising() {
