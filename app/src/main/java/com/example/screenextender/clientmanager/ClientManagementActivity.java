@@ -19,10 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.screenextender.R;
 
-public class ClientManagementActivity extends AppCompatActivity implements GraphFragment.OnFragmentInteractionListener {
+public class ClientManagementActivity extends AppCompatActivity implements GraphFragment.OnFragmentInteractionListener, SourceSelectFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -61,8 +62,7 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Toast.makeText(getBaseContext(), "Play Source", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -142,7 +142,7 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
                 case 0:
                     return new GraphFragment();
                 case 1:
-                    return new GraphFragment();
+                    return new SourceSelectFragment();
             }
             return null;
         }
