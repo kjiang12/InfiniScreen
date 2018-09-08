@@ -175,4 +175,16 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
     }
+
+    // Pause and seek to location.
+    public void syncPause(int ms) {
+        if(mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
+        }
+        mMediaPlayer.seekTo(ms);
+    }
+
+    public void syncPlay() {
+        mMediaPlayer.start();
+    }
 }
