@@ -1,26 +1,36 @@
 package com.example.screenextender;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.io.IOException;
-public class VideoCropActivity extends Activity implements TextureView.SurfaceTextureListener {
+
+/**
+ * An example full-screen activity that shows and hides the system UI (i.e.
+ * status bar and navigation/system bar) with user interaction.
+ */
+public class VideoCropActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
     // Original video size, in our case 640px / 360px
     private float mVideoWidth;
     private float mVideoHeight;
     // Log tag
-    private static final String TAG = VideoCropActivity.class.getName();
+    private static final String TAG = VideoCropActivity1.class.getName();
 
     // Asset video file name
     private static final String FILE_NAME = "vid_source.mp4";
