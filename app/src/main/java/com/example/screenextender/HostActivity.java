@@ -1,5 +1,6 @@
 package com.example.screenextender;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 //import com.google.android.gms.common.ConnectionResult;
 //import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,6 +49,7 @@ public class HostActivity extends AppCompatActivity {
 
     private static final String TAG = "screenExtender";
 
+    private String connections = "";
 
     public static final String CLIENT_NAME = "Test";
 
@@ -91,6 +94,13 @@ public class HostActivity extends AppCompatActivity {
                 public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
                     Log.i(TAG, "onConnectionInitiated: accepting connection");
                     connectionsClient.acceptConnection(endpointId, payloadCallback);
+
+                    connections = connections + " " + connectionInfo.getEndpointName();
+                    Context context = getApplicationContext();
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, connections, duration);
+                    toast.show();
                 }
 
                 @Override
