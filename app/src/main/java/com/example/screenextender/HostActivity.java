@@ -2,6 +2,7 @@ package com.example.screenextender;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +18,8 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 
 public class HostActivity extends AppCompatActivity {
@@ -51,12 +54,13 @@ public class HostActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_host);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
         connectionsClient = Nearby.getConnectionsClient(this);
-
         startAdvertising();
-
     }
 
     @Override
@@ -67,7 +71,21 @@ public class HostActivity extends AppCompatActivity {
 
     private void startAdvertising() {
         connectionsClient.startAdvertising(
-                CLIENT_NAME, SERVICE_ID, connectionLifecycleCallback, new AdvertisingOptions(STRATEGY));
+                CLIENT_NAME, SERVICE_ID, connectionLifecycleCallback, new AdvertisingOptions(STRATEGY))
+                .addOnSuccessListener(
+                        new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unusedResult) {
+                                Toast.makeText(getBaseContext(), "success", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_SHORT).show();
+                            }
+                        });;
     }
 
     private final ConnectionLifecycleCallback connectionLifecycleCallback =
