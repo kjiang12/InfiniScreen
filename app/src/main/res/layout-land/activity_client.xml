@@ -53,13 +53,6 @@
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
-            <Button
-                android:id="@+id/test_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="complete"
-                android:text="Button" />
-
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>
