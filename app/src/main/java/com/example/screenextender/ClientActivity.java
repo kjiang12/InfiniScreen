@@ -25,47 +25,12 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.MessageListener;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
 public class ClientActivity extends AppCompatActivity {
-
-    private ConnectionsClient connectionsClient;
-
-    private static final String TAG = "screenExtender";
-
-    public static final String CLIENT_NAME = "Test";
-
-    public static final String SERVICE_ID = "com.google.example.screenExtender";
-
-    public static final com.google.android.gms.nearby.connection.Strategy STRATEGY = Strategy.P2P_STAR;
-
-    private final PayloadCallback payloadCallback =
-            new PayloadCallback() {
-                @Override
-                public void onPayloadReceived(String endpointId, Payload payload) {
-                    //opponentChoice = GameChoice.valueOf(new String(payload.asBytes(), UTF_8));
-                }
-
-                @Override
-                public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
-                    if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
-                        //finishRound();
-                    }
-                }
-            };
-
-    private final EndpointDiscoveryCallback endpointDiscoveryCallback =
-            new EndpointDiscoveryCallback() {
-                @Override
-                public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
-                    Log.i(TAG, "onEndpointFound: endpoint found, connecting");
-                    connectionsClient.requestConnection(CLIENT_NAME, endpointId, connectionLifecycleCallback);
-                }
-
-                @Override
-                public void onEndpointLost(String endpointId) {}
-            };
 
 
     @Override
@@ -78,73 +43,32 @@ public class ClientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
     }
 
+    MessageListener mMessageListener = new MessageListener() {
+        @Override
+        public void onFound(Message message) {
+            setCompleted(new String(message.getContent()));
+        }
+
+        @Override
+        public void onLost(Message message) {
+            setDisconnect();
+        }
+    };
+
     @Override
     protected void onStart() {
         super.onStart();
-        connectionsClient = Nearby.getConnectionsClient(this);
+        Nearby.getMessagesClient(this).subscribe(mMessageListener);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        startDiscovery();
+    protected void onStop() {
+        Nearby.getMessagesClient(this).unsubscribe(mMessageListener);
+        super.onStop();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        connectionsClient.stopDiscovery();
-        connectionsClient.stopAllEndpoints();
-        Log.i(TAG, "onConnectionResult: stop discovering hosts");
-    }
-
-    private void startDiscovery() {
-        // Note: Discovery may fail. To keep this demo simple, we don't handle failures.
-        connectionsClient.startDiscovery(
-                SERVICE_ID, endpointDiscoveryCallback, new DiscoveryOptions(STRATEGY));
-        Log.i(TAG, "onConnectionResult: discovering hosts");
-    }
-
-    private final ConnectionLifecycleCallback connectionLifecycleCallback =
-            new ConnectionLifecycleCallback() {
-                @Override
-                public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-                    Log.i(TAG, "onConnectionInitiated: accepting connection");
-                    connectionsClient.acceptConnection(endpointId, payloadCallback);
-
-                    Context context = getApplicationContext();
-                    CharSequence text = connectionInfo.getEndpointName().toString();
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                    //opponentName = connectionInfo.getEndpointName();
-                }
-
-                @Override
-                public void onConnectionResult(String endpointId, ConnectionResolution result) {
-                    if (result.getStatus().isSuccess()) {
-                        Log.i(TAG, "onConnectionResult: connection successful");
-
-                        setCompleted(endpointId);
-                        //opponentEndpointId = endpointId;
-                        //setOpponentName(opponentName);
-                        //setStatusText(getString(R.string.status_connected));
-                        //setButtonState(true);
-                    } else {
-                        Log.i(TAG, "onConnectionResult: connection failed");
-                    }
-                }
-
-                @Override
-                public void onDisconnected(String endpointId) {
-                    Log.i(TAG, "onDisconnected: disconnected from the opponent");
-                }
-
-            };
     
     protected void setCompleted(String value){
-        Log.i("TAG_DEBUG", "connection succeed");
         ProgressBar loadingBar = findViewById(R.id.join_loading);
         loadingBar.setVisibility(View.GONE);
 
@@ -158,6 +82,34 @@ public class ClientActivity extends AppCompatActivity {
         final CardView card = findViewById(R.id.client_card);
         int colorFrom = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
         int colorTo = ContextCompat.getColor(this, android.R.color.holo_green_light);
+
+        ValueAnimator colorAnimation = ValueAnimator.ofArgb(colorFrom, colorTo);
+        colorAnimation.setDuration(250); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                card.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+    }
+
+    protected void setDisconnect(){
+        ProgressBar loadingBar = findViewById(R.id.join_loading);
+        loadingBar.setVisibility(View.VISIBLE);
+
+        TextView description = findViewById(R.id.join_text);
+        description.setText("Host Lost!");
+
+        TextView id = findViewById(R.id.id_text);
+        id.setVisibility(View.GONE);
+        id.setText("");
+
+        final CardView card = findViewById(R.id.client_card);
+        int colorFrom = ContextCompat.getColor(this, android.R.color.holo_green_light);
+        int colorTo = ContextCompat.getColor(this, android.R.color.holo_blue_light);
 
         ValueAnimator colorAnimation = ValueAnimator.ofArgb(colorFrom, colorTo);
         colorAnimation.setDuration(250); // milliseconds
