@@ -78,20 +78,7 @@ public class ClientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
 
         connectionsClient = Nearby.getConnectionsClient(this);
-
-
-
-
-
-        /*Button button = findViewById(R.id.test_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setCompleted(4);
-            }
-        });*/
-
-        //setContentView(R.layout.activity_client);
+        startDiscovery();
     }
 
     private void startDiscovery() {
@@ -137,10 +124,6 @@ public class ClientActivity extends AppCompatActivity {
                 }
 
             };
-
-    protected void onFinishInflate(){
-        startDiscovery();
-    }
     
     protected void setCompleted(String value){
         ProgressBar loadingBar = findViewById(R.id.join_loading);
