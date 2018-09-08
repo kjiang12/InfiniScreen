@@ -12,7 +12,7 @@ public class HostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.activity_host);
+        setContentView(R.layout.activity_host_broadcasting);
     }
 
     @Override
