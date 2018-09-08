@@ -81,7 +81,7 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        updateCropToDim();
+                        updateCropToDim(0.5f,0.5f,0.5f,0.5f);
                         break;
                 }
                 return true;
@@ -89,28 +89,25 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
         });
     }
 
-    private void updateCropToDim() {
-        float cropOriginXRatio= 0.5f, cropOriginYRatio = 0.5f, cropWidthRatio = 0.5f, cropHeightRatio = 0.5f;
-
+    private void updateCropToDim(float cropOriginXRatio, float cropOriginYRatio, float cropWidthRatio, float cropHeightRatio) {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int screenWidth = size.x;
         int screenHeight = size.y;
 
-        float scaleX = 1/cropWidthRatio;
+        float scaleX = 1 / cropWidthRatio;
         float scaleY = 1 / cropHeightRatio;
 
         Matrix matrix = new Matrix();
         matrix.setScale(scaleX, scaleY);
 
         Matrix matrix2 = new Matrix();
-        matrix2.setTranslate(-cropWidthRatio * screenWidth, -cropHeightRatio * screenHeight);
+        matrix2.setTranslate(-cropOriginXRatio * screenWidth, -cropOriginYRatio * screenHeight);
 
         matrix2.postConcat(matrix);
 
         mTextureView.setTransform(matrix2);
-        mTextureView.setLayoutParams(new FrameLayout.LayoutParams(screenWidth, screenHeight));
     }
 
     private void updateTextureViewSize(int viewWidth, int viewHeight) {
