@@ -121,7 +121,7 @@ public class ClientActivity extends AppCompatActivity {
                     if (result.getStatus().isSuccess()) {
                         Log.i(TAG, "onConnectionResult: connection successful");
 
-                        this.setCompleted(endpointId);
+                        setCompleted(endpointId);
                         //opponentEndpointId = endpointId;
                         //setOpponentName(opponentName);
                         //setStatusText(getString(R.string.status_connected));
