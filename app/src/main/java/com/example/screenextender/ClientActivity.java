@@ -106,6 +106,13 @@ public class ClientActivity extends AppCompatActivity {
                 public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
                     Log.i(TAG, "onConnectionInitiated: accepting connection");
                     connectionsClient.acceptConnection(endpointId, payloadCallback);
+
+                    Context context = getApplicationContext();
+                    CharSequence text = connectionInfo.getEndpointName().toString();
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                     //opponentName = connectionInfo.getEndpointName();
                 }
 
@@ -113,13 +120,7 @@ public class ClientActivity extends AppCompatActivity {
                 public void onConnectionResult(String endpointId, ConnectionResolution result) {
                     if (result.getStatus().isSuccess()) {
                         Log.i(TAG, "onConnectionResult: connection successful");
-                        
-                        Context context = getApplicationContext();
-                        CharSequence text = result.getStatus().toString();
-                        int duration = Toast.LENGTH_SHORT;
 
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
 
                         connectionsClient.stopDiscovery();
                         connectionsClient.stopAdvertising();
