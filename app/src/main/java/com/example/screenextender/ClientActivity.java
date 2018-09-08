@@ -78,7 +78,14 @@ public class ClientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
 
         connectionsClient = Nearby.getConnectionsClient(this);
+        
         startDiscovery();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        connectionsClient.stopDiscovery();
     }
 
     private void startDiscovery() {
