@@ -2,15 +2,13 @@ package com.example.screenextender;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +27,6 @@ import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-import static com.example.screenextender.hostActivity.SERVICE_ID;
 
 public class ClientActivity extends AppCompatActivity {
 
@@ -127,7 +124,7 @@ public class ClientActivity extends AppCompatActivity {
                         connectionsClient.stopDiscovery();
                         connectionsClient.stopAdvertising();
 
-                        ClientActivity.this.setCompleted(Integer.parseInt(endpointId));
+                        ClientActivity.this.setCompleted(endpointId);
                         //opponentEndpointId = endpointId;
                         //setOpponentName(opponentName);
                         //setStatusText(getString(R.string.status_connected));
@@ -149,9 +146,9 @@ public class ClientActivity extends AppCompatActivity {
     }
 
     public void complete(View v){
-        setCompleted(5);
+        setCompleted("5");
     }
-    protected void setCompleted(int value){
+    protected void setCompleted(String value){
         ProgressBar loadingBar = findViewById(R.id.join_loading);
         loadingBar.setVisibility(View.GONE);
 
