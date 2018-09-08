@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToHost(View v){
-        Intent intent = new Intent(this, VideoCropActivity.class);
+        Intent intent = new Intent(this, hostActivity.class);
         Bundle b = new Bundle();
         b.putFloat("xOrigin", 0.5f);
         b.putFloat("yOrigin", 0);

@@ -119,7 +119,7 @@ public class ClientActivity extends AppCompatActivity {
                         connectionsClient.stopDiscovery();
                         connectionsClient.stopAdvertising();
 
-                        //ClientActivity.this.setCompleted(Integer.parseInt(endpointId));
+                        ClientActivity.this.setCompleted(Integer.parseInt(endpointId));
                         //opponentEndpointId = endpointId;
                         //setOpponentName(opponentName);
                         //setStatusText(getString(R.string.status_connected));
@@ -140,7 +140,7 @@ public class ClientActivity extends AppCompatActivity {
 
     }
 
-    protected void complete(View v){
+    public void complete(View v){
         setCompleted(5);
     }
     protected void setCompleted(int value){
