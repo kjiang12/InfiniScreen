@@ -10,10 +10,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import java.io.IOException;
@@ -31,7 +29,7 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
     private MediaPlayer mMediaPlayer;
     private TextureView mTextureView;
 
-    private float xOrigin, yOrigin, width, height; // Expressed in 0-1 ratio
+    private float xOrigin = 1, yOrigin = 1, width = 1, height = 1; // Expressed in 0-1 ratio
 
     private void calculateVideoSize() {
         try {
@@ -83,18 +81,7 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
         mTextureView.setSurfaceTextureListener(this);
         mTextureView.setLayoutParams(new FrameLayout.LayoutParams(screenWidth, screenHeight));
 
-        FrameLayout rootView = (FrameLayout) findViewById(R.id.rootView);
-        rootView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        updateCropToDim(xOrigin, yOrigin, width, height);
-                        break;
-                }
-                return true;
-            }
-        });
+        updateCropToDim(xOrigin, yOrigin, width, height);
     }
 
     private void updateCropToDim(float cropOriginXRatio, float cropOriginYRatio, float cropWidthRatio, float cropHeightRatio) {

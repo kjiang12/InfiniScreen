@@ -96,7 +96,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void switchToHost(View v){
-        Intent intent = new Intent(this, ClientActivity.class);
+        Intent intent = new Intent(this, VideoCropActivity.class);
+        Bundle b = new Bundle();
+        b.putFloat("xOrigin", 0.5f);
+        b.putFloat("yOrigin", 0);
+        b.putFloat("width", 0.5f);
+        b.putFloat("height", 0.5f);
+        intent.putExtras(b);
         startActivity(intent);
     }
 
