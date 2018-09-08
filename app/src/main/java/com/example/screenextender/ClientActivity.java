@@ -100,6 +100,7 @@ public class ClientActivity extends AppCompatActivity {
         // Note: Discovery may fail. To keep this demo simple, we don't handle failures.
         connectionsClient.startDiscovery(
                 SERVICE_ID, endpointDiscoveryCallback, new DiscoveryOptions(STRATEGY));
+        Log.i(TAG, "onConnectionResult: discovering hosts");
     }
 
     private final ConnectionLifecycleCallback connectionLifecycleCallback =
