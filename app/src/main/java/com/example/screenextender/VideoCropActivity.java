@@ -1,12 +1,15 @@
 package com.example.screenextender;
+
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
@@ -63,7 +66,14 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
         // is attached to a window and onAttachedToWindow() has been invoked.
         // We need to use SurfaceTextureListener to be notified when the SurfaceTexture
         // becomes available.
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int screenWidth = size.x;
+        int screenHeight = size.y;
+
         mTextureView.setSurfaceTextureListener(this);
+        mTextureView.setLayoutParams(new FrameLayout.LayoutParams(screenWidth, screenHeight));
 
         FrameLayout rootView = (FrameLayout) findViewById(R.id.rootView);
         rootView.setOnTouchListener(new View.OnTouchListener() {
@@ -71,12 +81,36 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        updateTextureViewSize((int) motionEvent.getX(), (int) motionEvent.getY());
+                        updateCropToDim();
                         break;
                 }
                 return true;
             }
         });
+    }
+
+    private void updateCropToDim() {
+        float cropOriginXRatio= 0.5f, cropOriginYRatio = 0.5f, cropWidthRatio = 0.5f, cropHeightRatio = 0.5f;
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int screenWidth = size.x;
+        int screenHeight = size.y;
+
+        float scaleX = 1/cropWidthRatio;
+        float scaleY = 1 / cropHeightRatio;
+
+        Matrix matrix = new Matrix();
+        matrix.setScale(scaleX, scaleY);
+
+        Matrix matrix2 = new Matrix();
+        matrix2.setTranslate(-cropWidthRatio * screenWidth, -cropHeightRatio * screenHeight);
+
+        matrix2.postConcat(matrix);
+
+        mTextureView.setTransform(matrix2);
+        mTextureView.setLayoutParams(new FrameLayout.LayoutParams(screenWidth, screenHeight));
     }
 
     private void updateTextureViewSize(int viewWidth, int viewHeight) {
@@ -100,7 +134,7 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
         int pivotPointY = viewHeight / 2;
 
         Matrix matrix = new Matrix();
-        matrix.setScale(scaleX, scaleY, pivotPointX, pivotPointY);
+        matrix.setScale( mVideoWidth/ viewWidth * 2, mVideoHeight/viewHeight * 2);
 
         mTextureView.setTransform(matrix);
         mTextureView.setLayoutParams(new FrameLayout.LayoutParams(viewWidth, viewHeight));
