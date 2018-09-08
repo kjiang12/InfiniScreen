@@ -30,7 +30,7 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
     private float mVideoWidth;
     private float mVideoHeight;
     // Log tag
-    private static final String TAG = VideoCropActivity1.class.getName();
+    private static final String TAG = VideoCropActivity.class.getName();
 
     // Asset video file name
     private static final String FILE_NAME = "vid_source.mp4";
