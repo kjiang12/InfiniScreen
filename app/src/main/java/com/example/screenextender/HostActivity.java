@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
@@ -16,9 +17,6 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 
 public class HostActivity extends AppCompatActivity {
@@ -59,6 +57,12 @@ public class HostActivity extends AppCompatActivity {
 
         startAdvertising();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        connectionsClient.stopAdvertising();
     }
 
     private void startAdvertising() {

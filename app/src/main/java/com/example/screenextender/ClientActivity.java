@@ -76,7 +76,6 @@ public class ClientActivity extends AppCompatActivity {
 
         setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_client);
-
     }
 
     @Override
@@ -89,7 +88,12 @@ public class ClientActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startDiscovery();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        connectionsClient.stopDiscovery();
     }
 
     private void startDiscovery() {
