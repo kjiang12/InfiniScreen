@@ -144,10 +144,7 @@ public class ClientActivity extends AppCompatActivity {
     protected void onFinishInflate(){
 
     }
-
-    public void complete(View v){
-        setCompleted("5");
-    }
+    
     protected void setCompleted(String value){
         ProgressBar loadingBar = findViewById(R.id.join_loading);
         loadingBar.setVisibility(View.GONE);
