@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void switchToHost(View v){
-
+        Intent intent = new Intent(this, ClientActivity.class);
+        startActivity(intent);
     }
 
     protected void switchToClient(View v){

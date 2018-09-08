@@ -18,7 +18,7 @@ public class ClientActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
-        setContentView(R.layout.activity_join);
+        setContentView(R.layout.activity_client);
     }
 
 
