@@ -1,7 +1,10 @@
 package com.example.screenextender;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -112,9 +115,29 @@ public class GridViewImageTextActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
-                Toast.makeText(GridViewImageTextActivity.this, "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
+                //Toast.makeText(GridViewImageTextActivity.this, "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
+                showPhoneSelectionDialog();
             }
         });
+    }
+
+    private void showPhoneSelectionDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Nuke planet Jupiter?")
+                .setMessage("Note that nuking planet Jupiter will destroy everything in there.")
+                .setPositiveButton("Nuke", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("MainActivity", "Sending atomic bombs to Jupiter");
+                    }
+                })
+                .setNegativeButton("Abort", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("MainActivity", "Aborting mission...");
+                    }
+                })
+                .show();
     }
 
 

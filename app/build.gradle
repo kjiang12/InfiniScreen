@@ -17,6 +17,10 @@ android {
         }
     }
 }
+repositories {
+    maven { url "https://dl.bintray.com/drummer-aidan/maven/" }
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
