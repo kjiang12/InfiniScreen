@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ScreenExtender.iml" filepath="$PROJECT_DIR$/ScreenExtender.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/screenExtender.iml" filepath="$PROJECT_DIR$/screenExtender.iml" />
     </modules>
   </component>
 </project>

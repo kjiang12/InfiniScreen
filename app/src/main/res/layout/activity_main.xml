@@ -58,7 +58,8 @@
                     android:layout_marginRight="40dp"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_blue_light"
-                    android:text="Host" />
+                    android:text="Host"
+                    android:onClick="hostCall"/>
 
                 <Button
                     android:id="@+id/button8"
@@ -67,7 +68,8 @@
                     android:layout_marginRight="30dp"
                     android:layout_weight="1"
                     android:backgroundTint="@android:color/holo_green_light"
-                    android:text="Join" />
+                    android:text="Join"
+                    android:onClick="joinCall"/>
             </LinearLayout>
 
         </LinearLayout>

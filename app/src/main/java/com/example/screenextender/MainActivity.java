@@ -18,4 +18,13 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
     }
+
+    public void joinCall() {
+        setContentView(R.layout.activity_join);
+    }
+    public void hostCall() {
+        setContentView(R.layout.activity_host);
+
+
+    }
 }
