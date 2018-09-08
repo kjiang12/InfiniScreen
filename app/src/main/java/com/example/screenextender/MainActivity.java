@@ -12,6 +12,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.example.screenextender.clientmanager.ClientManagementActivity;
+
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
 public class MainActivity extends AppCompatActivity {
@@ -107,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToClient(View v){
-        Intent intent = new Intent(this, ClientActivity.class);
+        //Intent intent = new Intent(this, ClientActivity.class);
+        Intent intent = new Intent(this, ClientManagementActivity.class);
         startActivity(intent);
     }
 
