@@ -77,21 +77,19 @@ public class ClientActivity extends AppCompatActivity {
         setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_client);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         connectionsClient = Nearby.getConnectionsClient(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startDiscovery();
 
-
-
-
-        /*Button button = findViewById(R.id.test_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setCompleted(4);
-            }
-        });*/
-
-        //setContentView(R.layout.activity_client);
     }
 
     private void startDiscovery() {
@@ -137,12 +135,9 @@ public class ClientActivity extends AppCompatActivity {
                 }
 
             };
-
-    protected void onFinishInflate(){
-        startDiscovery();
-    }
     
     protected void setCompleted(String value){
+        Log.i("TAG_DEBUG", "connection succeed");
         ProgressBar loadingBar = findViewById(R.id.join_loading);
         loadingBar.setVisibility(View.GONE);
 
