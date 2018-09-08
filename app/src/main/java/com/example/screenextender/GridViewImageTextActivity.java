@@ -22,7 +22,6 @@ public class GridViewImageTextActivity extends AppCompatActivity {
     String[] gridViewString;
     int[] gridViewImageId;
     CustomGridViewActivity adapterViewAndroid;
-    String[] phoneNames;
     /*
     String[] gridViewString = {
             "Alram", "Android", "Mobile", "Website", "Profile", "WordPress",

@@ -94,14 +94,12 @@ public class ClientActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         connectionsClient.stopDiscovery();
-        Log.i(TAG, "onConnectionResult: stop discovering hosts");
     }
 
     private void startDiscovery() {
         // Note: Discovery may fail. To keep this demo simple, we don't handle failures.
         connectionsClient.startDiscovery(
                 SERVICE_ID, endpointDiscoveryCallback, new DiscoveryOptions(STRATEGY));
-        Log.i(TAG, "onConnectionResult: discovering hosts");
     }
 
     private final ConnectionLifecycleCallback connectionLifecycleCallback =
