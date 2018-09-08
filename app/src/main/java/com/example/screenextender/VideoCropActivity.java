@@ -1,13 +1,16 @@
 package com.example.screenextender;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -17,7 +20,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import java.io.IOException;
-public class VideoCropActivity extends Activity implements TextureView.SurfaceTextureListener {
+
+/**
+ * An example full-screen activity that shows and hides the system UI (i.e.
+ * status bar and navigation/system bar) with user interaction.
+ */
+public class VideoCropActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
     // Original video size, in our case 640px / 360px
     private float mVideoWidth;
     private float mVideoHeight;
@@ -25,11 +33,13 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
     private static final String TAG = VideoCropActivity.class.getName();
 
     // Asset video file name
-    private static final String FILE_NAME = "big_buck_bunny.mp4";
+    private static final String FILE_NAME = "vid_source.mp4";
 
     // MediaPlayer instance to control playback of video file.
     private MediaPlayer mMediaPlayer;
     private TextureView mTextureView;
+
+    private float xOrigin = 1, yOrigin = 1, width = 1, height = 1; // Expressed in 0-1 ratio
 
     private void calculateVideoSize() {
         try {
@@ -56,6 +66,12 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.texture_video_crop);
 
+        Bundle b = getIntent().getExtras();
+        xOrigin = b.getFloat("xOrigin");
+        yOrigin = b.getFloat("yOrigin");
+        width = b.getFloat("width");
+        height = b.getFloat("height");
+
         calculateVideoSize();
         initView();
     }
@@ -75,18 +91,7 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
         mTextureView.setSurfaceTextureListener(this);
         mTextureView.setLayoutParams(new FrameLayout.LayoutParams(screenWidth, screenHeight));
 
-        FrameLayout rootView = (FrameLayout) findViewById(R.id.rootView);
-        rootView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        updateCropToDim(0.5f,0.5f,0.5f,0.5f);
-                        break;
-                }
-                return true;
-            }
-        });
+        updateCropToDim(xOrigin, yOrigin, width, height);
     }
 
     private void updateCropToDim(float cropOriginXRatio, float cropOriginYRatio, float cropWidthRatio, float cropHeightRatio) {
@@ -108,33 +113,6 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
         matrix2.postConcat(matrix);
 
         mTextureView.setTransform(matrix2);
-    }
-
-    private void updateTextureViewSize(int viewWidth, int viewHeight) {
-        float scaleX = 1.0f;
-        float scaleY = 1.0f;
-
-        if (mVideoWidth > viewWidth && mVideoHeight > viewHeight) {
-            scaleX = mVideoWidth / viewWidth;
-            scaleY = mVideoHeight / viewHeight;
-        } else if (mVideoWidth < viewWidth && mVideoHeight < viewHeight) {
-            scaleY = viewWidth / mVideoWidth;
-            scaleX = viewHeight / mVideoHeight;
-        } else if (viewWidth > mVideoWidth) {
-            scaleY = (viewWidth / mVideoWidth) / (viewHeight / mVideoHeight);
-        } else if (viewHeight > mVideoHeight) {
-            scaleX = (viewHeight / mVideoHeight) / (viewWidth / mVideoWidth);
-        }
-
-        // Calculate pivot points, in our case crop from center
-        int pivotPointX = viewWidth / 2;
-        int pivotPointY = viewHeight / 2;
-
-        Matrix matrix = new Matrix();
-        matrix.setScale( mVideoWidth/ viewWidth * 2, mVideoHeight/viewHeight * 2);
-
-        mTextureView.setTransform(matrix);
-        mTextureView.setLayoutParams(new FrameLayout.LayoutParams(viewWidth, viewHeight));
     }
 
     @Override
@@ -159,6 +137,16 @@ public class VideoCropActivity extends Activity implements TextureView.SurfaceTe
                     .setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             mMediaPlayer.setSurface(surface);
             mMediaPlayer.setLooping(true);
+
+            float leftVolume = 1, rightVolume = 1;
+
+            if(xOrigin + width / 2 > 0.5) {
+                leftVolume = 0;
+            } else {
+                rightVolume = 0;
+            }
+
+            mMediaPlayer.setVolume(leftVolume, rightVolume);
 
             // don't forget to call MediaPlayer.prepareAsync() method when you use constructor for
             // creating MediaPlayer
