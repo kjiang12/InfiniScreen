@@ -39,7 +39,7 @@
             android:screenOrientation="landscape"
             />
         <activity
-            android:name=".hostActivity"
+            android:name=".HostActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="landscape"
             />

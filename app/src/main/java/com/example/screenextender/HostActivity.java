@@ -41,7 +41,7 @@ import com.google.android.gms.nearby.connection.PayloadCallback;
 
 
 
-public class hostActivity extends AppCompatActivity {
+public class HostActivity extends AppCompatActivity {
 
     private ConnectionsClient connectionsClient;
 

@@ -1,17 +1,14 @@
 package com.example.screenextender;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -99,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToHost(View v){
-        Intent intent = new Intent(this, hostActivity.class);
+        Intent intent = new Intent(this, HostActivity.class);
         Bundle b = new Bundle();
         b.putFloat("xOrigin", 0.5f);
         b.putFloat("yOrigin", 0);
