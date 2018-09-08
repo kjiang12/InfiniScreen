@@ -1,5 +1,6 @@
 package com.example.screenextender;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,23 +16,9 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
-
-//import com.google.android.gms.common.ConnectionResult;
-//import com.google.android.gms.common.api.GoogleApiClient;
-//import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-//import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-//import com.google.android.gms.common.api.ResultCallback;
-//import com.google.android.gms.nearby.Nearby;
-//import com.google.android.gms.nearby.connection.AdvertisingOptions;
-//import com.google.android.gms.nearby.connection.ConnectionInfo;
-//import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
-//import com.google.android.gms.nearby.connection.ConnectionResolution;
-//import com.google.android.gms.nearby.connection.Connections;
-//import com.google.android.gms.nearby.connection.Strategy;
-//import com.google.android.gms.tasks.OnFailureListener;
-//import com.google.android.gms.tasks.OnSuccessListener;
-
-
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 
 public class HostActivity extends AppCompatActivity {
@@ -40,6 +27,7 @@ public class HostActivity extends AppCompatActivity {
 
     private static final String TAG = "screenExtender";
 
+    private String connections = "";
 
     public static final String CLIENT_NAME = "InfScreenHost";
 
@@ -84,6 +72,13 @@ public class HostActivity extends AppCompatActivity {
                 public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
                     Log.i(TAG, "onConnectionInitiated: accepting connection");
                     connectionsClient.acceptConnection(endpointId, payloadCallback);
+
+                    connections = connections + " " + connectionInfo.getEndpointName();
+                    Context context = getApplicationContext();
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, connections, duration);
+                    toast.show();
                 }
 
                 @Override
