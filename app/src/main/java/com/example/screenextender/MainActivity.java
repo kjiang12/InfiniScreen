@@ -1,4 +1,7 @@
 package com.example.screenextender;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.DialogInterface;

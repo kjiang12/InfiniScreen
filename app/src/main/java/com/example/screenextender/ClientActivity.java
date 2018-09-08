@@ -7,15 +7,68 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.ConnectionInfo;
+import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
+import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionsClient;
+import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
+import com.google.android.gms.nearby.connection.DiscoveryOptions;
+import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
+import com.google.android.gms.nearby.connection.Payload;
+import com.google.android.gms.nearby.connection.PayloadCallback;
+import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
+import com.google.android.gms.nearby.connection.Strategy;
+
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+import static com.example.screenextender.hostActivity.SERVICE_ID;
 
 public class ClientActivity extends AppCompatActivity {
+
+    private ConnectionsClient connectionsClient;
+
+    private static final String TAG = "screenExtender";
+
+    public static final String CLIENT_NAME = "Test";
+
+    public static final String SERVICE_ID = "com.google.example.screenExtender";
+
+    public static final com.google.android.gms.nearby.connection.Strategy STRATEGY = Strategy.P2P_STAR;
+
+    private final PayloadCallback payloadCallback =
+            new PayloadCallback() {
+                @Override
+                public void onPayloadReceived(String endpointId, Payload payload) {
+                    //opponentChoice = GameChoice.valueOf(new String(payload.asBytes(), UTF_8));
+                }
+
+                @Override
+                public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
+                    if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                        //finishRound();
+                    }
+                }
+            };
+
+    private final EndpointDiscoveryCallback endpointDiscoveryCallback =
+            new EndpointDiscoveryCallback() {
+                @Override
+                public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
+                    Log.i(TAG, "onEndpointFound: endpoint found, connecting");
+                    connectionsClient.requestConnection(CLIENT_NAME, endpointId, connectionLifecycleCallback);
+                }
+
+                @Override
+                public void onEndpointLost(String endpointId) {}
+            };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +78,11 @@ public class ClientActivity extends AppCompatActivity {
 
         setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_client);
+
+        connectionsClient = Nearby.getConnectionsClient(this);
+
+
+        startDiscovery();
 
 
         /*Button button = findViewById(R.id.test_button);
@@ -37,6 +95,46 @@ public class ClientActivity extends AppCompatActivity {
 
         //setContentView(R.layout.activity_client);
     }
+
+    private void startDiscovery() {
+        // Note: Discovery may fail. To keep this demo simple, we don't handle failures.
+        connectionsClient.startDiscovery(
+                SERVICE_ID, endpointDiscoveryCallback, new DiscoveryOptions(STRATEGY));
+    }
+
+    private final ConnectionLifecycleCallback connectionLifecycleCallback =
+            new ConnectionLifecycleCallback() {
+                @Override
+                public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
+                    Log.i(TAG, "onConnectionInitiated: accepting connection");
+                    connectionsClient.acceptConnection(endpointId, payloadCallback);
+                    //opponentName = connectionInfo.getEndpointName();
+                }
+
+                @Override
+                public void onConnectionResult(String endpointId, ConnectionResolution result) {
+                    if (result.getStatus().isSuccess()) {
+                        Log.i(TAG, "onConnectionResult: connection successful");
+
+                        connectionsClient.stopDiscovery();
+                        connectionsClient.stopAdvertising();
+
+                        //ClientActivity.this.setCompleted(Integer.parseInt(endpointId));
+                        //opponentEndpointId = endpointId;
+                        //setOpponentName(opponentName);
+                        //setStatusText(getString(R.string.status_connected));
+                        //setButtonState(true);
+                    } else {
+                        Log.i(TAG, "onConnectionResult: connection failed");
+                    }
+                }
+
+                @Override
+                public void onDisconnected(String endpointId) {
+                    Log.i(TAG, "onDisconnected: disconnected from the opponent");
+                }
+
+            };
 
     protected void onFinishInflate(){
 
