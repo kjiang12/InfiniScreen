@@ -150,7 +150,7 @@ public class ClientActivity extends AppCompatActivity {
 
         TextView id = findViewById(R.id.id_text);
         id.setVisibility(View.VISIBLE);
-        id.setText(value + "");
+        id.setText(getDeviceName() + "");
 
         final CardView card = findViewById(R.id.client_card);
         int colorFrom = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
