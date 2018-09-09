@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.screenextender.R;
 
@@ -18,12 +19,15 @@ public class CustomGridViewActivity extends BaseAdapter {
     private final String[] gridViewString;
     private final int[] gridViewImageId;
     private HashMap<Integer, TextView> textFields;
+    private HashMap<String, Integer> selectedPhones;
 
     public CustomGridViewActivity(Context context, String[] gridViewString, int[] gridViewImageId) {
         mContext = context;
         this.gridViewImageId = gridViewImageId;
         this.gridViewString = gridViewString;
         textFields = new HashMap<Integer, TextView>();
+        selectedPhones = new HashMap<String, Integer>();
+
     }
 
     @Override
@@ -55,7 +59,11 @@ public class CustomGridViewActivity extends BaseAdapter {
             ImageView imageViewAndroid = (ImageView) gridViewAndroid.findViewById(R.id.android_gridview_image);
             textViewAndroid.setText(gridViewString[i]);
             imageViewAndroid.setImageResource(gridViewImageId[i]);
-            textFields.put(i, textViewAndroid);
+            if (textFields.containsKey(0) && i == 0) {
+
+            } else {
+                textFields.put(i, textViewAndroid);
+            }
         } else {
             gridViewAndroid = (View) convertView;
         }
@@ -66,4 +74,10 @@ public class CustomGridViewActivity extends BaseAdapter {
     public HashMap<Integer, TextView> getTextFields() {
         return textFields;
     }
+
+
+    public HashMap<String, Integer> getSelectedPhones() {
+        return selectedPhones;
+    }
+
 }

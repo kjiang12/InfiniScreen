@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -13,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.screenextender.GridViewImageTextActivity;
 import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
 
@@ -153,28 +156,60 @@ public class GraphFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
                 //Toast.makeText(GridViewImageTextActivity.this, "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
-                String[] testPhones = {"Test Phone 1", "Test Phone 2", "Test Phone 3"};
+                String[] testPhones = {"Test Phone 1", "Test Phone 2", "Test Phone 3", "Test Phone 4"};
                 showPhoneSelectionDialog(testPhones, i);
             }
         });
     }
 
     private void showPhoneSelectionDialog(final String[] phoneNames, final int index) {
-        final HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
-        new AlertDialog.Builder(this.getContext())
-                .setTitle("Pick phone to go in slot # "+(index + 1))
-                //.setMessage("Pick phone to go in slot # "+(index + 1))
-                .setItems(phoneNames, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        gridViewString[index] = phoneNames[which];
-                        TextView newTextView = adapterViewAndroid.getTextFields().get(index);
-                        newTextView.setText(phoneNames[which]);
-                        HashMap<Integer, TextView> a = adapterViewAndroid.getTextFields();
-                        adapterViewAndroid.getTextFields().put(index, newTextView);
+        getActivity().runOnUiThread(new Runnable() {
+            public void run()
+            {
 
-                    }
-                })
-                .show();
+                final HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Pick phone to go in slot # "+(index + 1))
+                        .setItems(phoneNames, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                gridViewString[index] = phoneNames[which];
+                                HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
+                                TextView newTextView = textFields.get(index);
+
+                                HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
+                                if (!(newTextView.getText().equals("Select..."))){
+                                    selectedPhones.remove(newTextView.getText());
+                                    newTextView.setText("Select...");
+                                }
+                                newTextView.setText(phoneNames[which]);
+                                if (adapterViewAndroid.getSelectedPhones().containsKey(phoneNames[which])) {
+                                    //HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
+                                    TextView selectTextView = textFields.get(selectedPhones.get(phoneNames[which]));
+                                    selectTextView.setText("Select...");
+                                    //selectedPhones.remove(phoneNames[which]);
+                                    selectedPhones.put(phoneNames[which], index);
+                                } else {
+                                    //HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
+                                    selectedPhones.put(phoneNames[which], index);
+                                }
+
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                    }
+                                }, 5000);
+
+                            }
+                        })
+
+                        .show();
+            }
+        });
+
+
     }
     @Override
     public void onDetach() {

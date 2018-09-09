@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToClient(View v){
-        Intent intent = new Intent(this, ClientActivity.class);
-        //Intent intent = new Intent(this, ClientManagementActivity.class);
+        //Intent intent = new Intent(this, ClientActivity.class);
+        Intent intent = new Intent(this, ClientManagementActivity.class);
         startActivity(intent);
     }
 
