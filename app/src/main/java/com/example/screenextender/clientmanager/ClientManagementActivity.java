@@ -81,7 +81,7 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         super.onCreate(savedInstanceState);
         //Remove notification bar
 
-        mSocket.on("position", onConvertedUrlReceived);
+        mSocket.on("dl_url", onConvertedUrlReceived);
         mSocket.connect();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_client_management);
