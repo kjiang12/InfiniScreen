@@ -8,9 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import me.himanshusoni.quantityview.QuantityView;
 
@@ -117,25 +122,47 @@ public class GridViewImageTextActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
                 //Toast.makeText(GridViewImageTextActivity.this, "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
-                showPhoneSelectionDialog();
+                String[] testPhones = {"Test Phone 1", "Test Phone 2", "Test Phone 3"};
+                showPhoneSelectionDialog(testPhones, i);
             }
         });
     }
 
-    private void showPhoneSelectionDialog() {
+    private void showPhoneSelectionDialog(final String[] phoneNames, final int index) {
+        final HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
         new AlertDialog.Builder(this)
-                .setTitle("Nuke planet Jupiter?")
-                .setMessage("Note that nuking planet Jupiter will destroy everything in there.")
-                .setPositiveButton("Nuke", new DialogInterface.OnClickListener() {
-                    @Override
+                .setTitle("Pick phone to go in slot # "+(index + 1))
+                //.setMessage("Pick phone to go in slot # "+(index + 1))
+                .setItems(phoneNames, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("MainActivity", "Sending atomic bombs to Jupiter");
+                        gridViewString[index] = phoneNames[which];
+                        TextView newTextView = adapterViewAndroid.getTextFields().get(index);
+                        newTextView.setText(phoneNames[which]);
+                        adapterViewAndroid.getTextFields().put(index, newTextView);
+
+                        /*for (Integer key : adapterViewAndroid.getTextFields().keySet()) {
+                            if (adapterViewAndroid.getTextFields().get(key).getText().toString().equals(phoneNames[which]) && (key != index)) {
+                                TextView selectTextView = adapterViewAndroid.getTextFields().get(index);
+                                selectTextView.setText("Select...");
+                                adapterViewAndroid.getTextFields().put(index, selectTextView);
+                            }
+                        }*/
+
                     }
                 })
-                .setNegativeButton("Abort", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("MainActivity", "Aborting mission...");
+                        //Log.d("MainActivity", "Sending atomic bombs to Jupiter");
+                        adapterViewAndroid.getTextFields().get(index).setText(phoneNames[which]);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Log.d("MainActivity", "Aborting mission...");
+                        gridViewString[index] = "Select...";
+                        adapterViewAndroid.getTextFields().get(index).setText(gridViewString[index]);
                     }
                 })
                 .show();

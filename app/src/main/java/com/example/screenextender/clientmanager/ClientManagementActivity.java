@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,8 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Remove notification bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_client_management);
 
         // Create the adapter that will return a fragment for each of the three
@@ -149,7 +152,6 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 2;
         }
     }
