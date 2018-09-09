@@ -122,11 +122,11 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
                         float width = 1.0f/numCols,
                               height = 1.0f/numRows;
                         intentBundle.putFloat("xOrigin", (i % numCols) * width);
-                        intentBundle.putFloat("yOrigin", (i / numRows) * height);
+                        intentBundle.putFloat("yOrigin", (i / numCols) * height);
                         intentBundle.putFloat("width", 1.0f/numCols);
                         intentBundle.putFloat("height", 1.0f/numRows);
                     } else {
-                        DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(ids[i], i / numRows, i % numCols);
+                        DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(ids[i], i / numCols, i % numCols);
                         devicePositions.add(currDevicePosition);
                     }
                 }

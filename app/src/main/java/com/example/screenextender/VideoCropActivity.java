@@ -14,6 +14,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -119,14 +120,18 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
         float scaleY = 1 / cropHeightRatio;
 
         Matrix matrix = new Matrix();
-        matrix.setScale(scaleX, scaleY);
+        matrix.setScale(scaleX, scaleX, 0, 0);
 
         Matrix matrix2 = new Matrix();
-        matrix2.setTranslate(-cropOriginXRatio * screenWidth, -cropOriginYRatio * screenHeight);
+        matrix2.setTranslate(-cropOriginXRatio * screenWidth, -cropOriginYRatio * screenHeight + (1 - scaleY / scaleX * screenHeight));
 
         matrix2.postConcat(matrix);
 
         mTextureView.setTransform(matrix2);
+
+        Toast.makeText(this, "scaleX = " + scaleX + "scaleY = " + scaleY +
+                "translateX = " + (-cropOriginXRatio * screenWidth) + "translateY = " + (-cropOriginYRatio * screenHeight), Toast.LENGTH_LONG).show();
+
     }
 
     @Override
