@@ -139,9 +139,10 @@ public class GraphFragment extends Fragment {
         numRows = rowsQuantityView.getQuantity();
         generateGrid(phoneNames, phoneIds);
 
-        QuantityView.OnQuantityChangeListener quantityChangeListener = new QuantityView.OnQuantityChangeListener() {
+        rowsQuantityView.setOnQuantityChangeListener(new QuantityView.OnQuantityChangeListener() {
             @Override
             public void onQuantityChanged(int oldQuantity, int newQuantity, boolean programmatically) {
+                numRows = newQuantity;
                 generateGrid(phoneNames, phoneIds);
             }
 
@@ -149,9 +150,19 @@ public class GraphFragment extends Fragment {
             public void onLimitReached() {
 
             }
-        };
-        rowsQuantityView.setOnQuantityChangeListener(quantityChangeListener);
-        colsQuantityView.setOnQuantityChangeListener(quantityChangeListener);
+        });
+        colsQuantityView.setOnQuantityChangeListener(new QuantityView.OnQuantityChangeListener() {
+            @Override
+            public void onQuantityChanged(int oldQuantity, int newQuantity, boolean programmatically) {
+                numCols = newQuantity;
+                generateGrid(phoneNames, phoneIds);
+            }
+
+            @Override
+            public void onLimitReached() {
+
+            }
+        });
     }
 
     private void generateGrid(final String[] phoneNames, final String[] phoneIds) {
