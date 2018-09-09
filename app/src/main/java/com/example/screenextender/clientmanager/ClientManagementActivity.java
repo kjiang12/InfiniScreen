@@ -2,30 +2,29 @@ package com.example.screenextender.clientmanager;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.screenextender.DeviceGridPositionInfo;
-import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
-import com.example.screenextender.VideoCropAdminActivity;
+import com.example.screenextender.VideoLoadAdminActivity;
 import com.example.screenextender.clientmanager.clientgraph.GraphFragment;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -33,9 +32,6 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.SimpleTimeZone;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 
 public class ClientManagementActivity extends AppCompatActivity implements GraphFragment.OnFragmentInteractionListener, SourceSelectFragment.OnFragmentInteractionListener {
 
@@ -56,16 +52,36 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
     protected Fragment graphFragment;
     protected Fragment sourceFragment;
     private Socket mSocket;
+    private Intent intent;
+    private Bundle intentBundle;
+
     {
         try {
             mSocket = IO.socket("http://infiniscreen.herokuapp.com");
         } catch (URISyntaxException e) {}
     }
 
+    private Emitter.Listener onConvertedUrlReceived = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String convertedUrl = (String)args[0];
+                    intentBundle.putString("converted_url", convertedUrl);
+                    intent.putExtras(intentBundle);
+                    startActivity(intent);
+                }
+            });
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Remove notification bar
+
+        mSocket.on("dl_url", onConvertedUrlReceived);
         mSocket.connect();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_client_management);
@@ -99,15 +115,15 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
                 int numRows = graph.getNumRows();
                 int numCols = graph.getNumCols();
 
-                Bundle b = new Bundle();
+                intentBundle = new Bundle();
                 for (int i = 0; i<ids.length; i++) {
                     if (ids[i].equals("Host")) {
                         float width = 1.0f/numCols,
                               height = 1.0f/numRows;
-                        b.putFloat("xOrigin", (i % numCols) * width);
-                        b.putFloat("yOrigin", (i / numRows) * height);
-                        b.putFloat("width", 1.0f/numCols);
-                        b.putFloat("height", 1.0f/numRows);
+                        intentBundle.putFloat("xOrigin", (i % numCols) * width);
+                        intentBundle.putFloat("yOrigin", (i / numRows) * height);
+                        intentBundle.putFloat("width", 1.0f/numCols);
+                        intentBundle.putFloat("height", 1.0f/numRows);
                     } else {
                         DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(ids[i], i / numRows, i % numCols);
                         devicePositions.add(currDevicePosition);
@@ -118,14 +134,12 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
                 Gson gson = new Gson();
                 try {
                     JSONObject obj = new JSONObject(gson.toJson(deviceGridPositionInfo));
-                    mSocket.emit("positions", obj);
+                    mSocket.emit("positions_url", obj, source_url);
                 } catch (JSONException e) {
 
                 }
-                Intent intent = new Intent(ClientManagementActivity.this, VideoCropAdminActivity.class);
-                intent.putExtras(b);
-                startActivity(intent);
-
+                //Intent intent = new Intent(ClientManagementActivity.this, VideoCropAdminActivity.class);
+                intent = new Intent(ClientManagementActivity.this, VideoLoadAdminActivity.class);
 
 
 

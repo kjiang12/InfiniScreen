@@ -1,7 +1,6 @@
 package com.example.screenextender;
 
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -13,34 +12,21 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.ConnectionInfo;
-import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
-import com.google.android.gms.nearby.connection.ConnectionResolution;
-import com.google.android.gms.nearby.connection.ConnectionsClient;
-import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
-import com.google.android.gms.nearby.connection.DiscoveryOptions;
-import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
-import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.gms.nearby.connection.PayloadCallback;
-import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
-import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
-
 import java.net.URISyntaxException;
+
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
 public class ClientActivity extends AppCompatActivity {
     private Socket mSocket;
@@ -50,7 +36,7 @@ public class ClientActivity extends AppCompatActivity {
         } catch (URISyntaxException e) {}
     }
 
-    private Emitter.Listener onVideoPositionReceived = new Emitter.Listener() {
+    private Emitter.Listener onVideoPositionUrlReceived = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
             runOnUiThread(new Runnable() {
@@ -60,12 +46,14 @@ public class ClientActivity extends AppCompatActivity {
                     float yOrigin = parseArg(args[1]);
                     float width = parseArg(args[2]);
                     float height = parseArg(args[3]);
-                    Intent intent = new Intent(ClientActivity.this, VideoCropActivity.class);
+                    String url = (String)args[4];
+                    Intent intent = new Intent(ClientActivity.this, VideoLoadActivity.class);
                     Bundle b = new Bundle();
                     b.putFloat("xOrigin", xOrigin);
                     b.putFloat("yOrigin", yOrigin);
                     b.putFloat("width", width);
                     b.putFloat("height", height);
+                    b.putString("convertedUrl", url);
                     intent.putExtras(b);
                     startActivity(intent);
                 }
@@ -87,13 +75,12 @@ public class ClientActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        mSocket.on("position", onVideoPositionReceived);
+        mSocket.on("positions_with_dl_url", onVideoPositionUrlReceived);
         mSocket.connect();
         setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_client);
