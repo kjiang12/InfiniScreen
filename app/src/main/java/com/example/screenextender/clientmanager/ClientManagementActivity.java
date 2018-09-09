@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
 import com.example.screenextender.clientmanager.clientgraph.GraphFragment;
 
@@ -39,6 +40,7 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    protected Fragment graphFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,11 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
                 Toast.makeText(getBaseContext(), "Play Source", Toast.LENGTH_SHORT).show();
             }
         });
+
+        graphFragment = new GraphFragment();
+        Bundle bundle = new Bundle();
+        
+        ArrayList<HostActivity.DeviceInfo> clientsList = getIntent().getExtras().getParcelableArrayList("clientlist");
 
     }
 
