@@ -23,13 +23,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class VideoCropActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
-    
+
     Socket mSocket;
     {
         try {
             mSocket = IO.socket("http://infiniscreen.herokuapp.com");
         } catch (URISyntaxException e) {}
     }
+
+    boolean prepared = false;
 
     private Emitter.Listener onPlayReceived = new Emitter.Listener() {
         @Override
@@ -166,7 +168,7 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
-                    //mediaPlayer.start();
+                   prepared = true;
                 }
             });
 
