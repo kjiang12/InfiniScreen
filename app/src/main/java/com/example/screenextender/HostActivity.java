@@ -3,6 +3,7 @@ package com.example.screenextender;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
@@ -42,6 +43,8 @@ public class HostActivity extends AppCompatActivity {
         mSocket.on("code_assignment", onJoinCodeReceived);
         mSocket.connect();
         mSocket.emit("host_start");
+        //Remove notification bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_host_broadcasting);
     }
 
