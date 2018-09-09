@@ -30,7 +30,7 @@
             android:value="AIzaSyBwgKWFdLNBmLOti4TCTsy29FnK7V-Nnr8" />
 
         <activity
-            android:name=".GridViewImageTextActivity"
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
