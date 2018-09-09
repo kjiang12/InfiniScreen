@@ -1,5 +1,6 @@
 package com.example.screenextender;
 
+
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -12,10 +13,14 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 import android.widget.FrameLayout;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URISyntaxException;
 
 public class VideoCropActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
@@ -94,7 +99,6 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
         mSocket.on("pause", onPauseReceived);
         mSocket.connect();
 
-
         Bundle b = getIntent().getExtras();
         xOrigin = b.getFloat("xOrigin");
         yOrigin = b.getFloat("yOrigin");
@@ -119,6 +123,8 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
 
         mTextureView.setSurfaceTextureListener(this);
         mTextureView.setLayoutParams(new FrameLayout.LayoutParams(screenWidth, screenHeight));
+
+        mTextureView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         updateCropToDim(xOrigin, yOrigin, width, height);
     }
@@ -165,7 +171,7 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
             mMediaPlayer
                     .setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             mMediaPlayer.setSurface(surface);
-            mMediaPlayer.setLooping(true);
+            mMediaPlayer.setLooping(false);
 
             float leftVolume = 1, rightVolume = 1;
 
