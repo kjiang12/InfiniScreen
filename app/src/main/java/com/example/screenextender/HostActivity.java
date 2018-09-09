@@ -90,7 +90,7 @@ public class HostActivity extends AppCompatActivity {
 
 
 
-                        Intent intent = new Intent(HostActivity.this, VideoCropActivity.class);
+                        Intent intent = new Intent(HostActivity.this, VideoCropAdminActivity.class);
                         Bundle b = new Bundle();
                         b.putFloat("xOrigin", 0f);
                         b.putFloat("yOrigin", 0f);

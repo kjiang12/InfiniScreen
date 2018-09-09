@@ -15,10 +15,44 @@ import android.view.TextureView;
 import android.widget.FrameLayout;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.net.URISyntaxException;
 
 public class VideoCropActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
     private float mVideoWidth;
     private float mVideoHeight;
+
+    Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("http://infiniscreen.herokuapp.com");
+        } catch (URISyntaxException e) {}
+    }
+
+    private Emitter.Listener onPlayReceived = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    syncPlay();
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onPauseReceived = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    syncPause((Integer)args[0]);
+                }
+            });
+        }
+    };
+
     // Log tag
     private static final String TAG = VideoCropActivity.class.getName();
 
@@ -26,7 +60,7 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
     private static final String FILE_NAME = "vid_source.mp4";
 
     // MediaPlayer instance to control playback of video file.
-    private MediaPlayer mMediaPlayer;
+    MediaPlayer mMediaPlayer;
     private TextureView mTextureView;
 
     private float xOrigin = 1, yOrigin = 1, width = 1, height = 1; // Expressed in 0-1 ratio
@@ -56,6 +90,9 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.texture_video_crop);
 
+        mSocket.on("play", onPlayReceived);
+        mSocket.on("pause", onPauseReceived);
+        mSocket.connect();
 
 
         Bundle b = getIntent().getExtras();
@@ -68,7 +105,7 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
         initView();
     }
 
-    private void initView() {
+    void initView() {
         mTextureView = (TextureView) findViewById(R.id.textureView);
         // SurfaceTexture is available only after the TextureView
         // is attached to a window and onAttachedToWindow() has been invoked.
@@ -148,7 +185,7 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
-                    mediaPlayer.start();
+                    //mediaPlayer.start();
                 }
             });
 
