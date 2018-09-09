@@ -1,13 +1,12 @@
 package com.example.screenextender;
 
 
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -24,9 +23,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class VideoCropActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
-    private float mVideoWidth;
-    private float mVideoHeight;
-
+    
     Socket mSocket;
     {
         try {
@@ -70,26 +67,6 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
 
     private float xOrigin = 1, yOrigin = 1, width = 1, height = 1; // Expressed in 0-1 ratio
 
-    private void calculateVideoSize() {
-        try {
-            AssetFileDescriptor afd = getAssets().openFd(FILE_NAME);
-            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-            metaRetriever.setDataSource(
-                    afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-            String height = metaRetriever
-                    .extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
-            String width = metaRetriever
-                    .extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
-            mVideoHeight = Float.parseFloat(height);
-            mVideoWidth = Float.parseFloat(width);
-
-        } catch (IOException e) {
-            Log.d(TAG, e.getMessage());
-        } catch (NumberFormatException e) {
-            Log.d(TAG, e.getMessage());
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +82,6 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
         width = b.getFloat("width");
         height = b.getFloat("height");
 
-        calculateVideoSize();
         initView();
     }
 
@@ -166,10 +142,9 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
         Surface surface = new Surface(surfaceTexture);
 
         try {
-            AssetFileDescriptor afd = getAssets().openFd(FILE_NAME);
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer
-                    .setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                    .setDataSource(Environment.DIRECTORY_DOWNLOADS + "/Infiniscreen/vid.mp4");
             mMediaPlayer.setSurface(surface);
             mMediaPlayer.setLooping(false);
 
