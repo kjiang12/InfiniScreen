@@ -169,7 +169,7 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
             mMediaPlayer
                     .setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             mMediaPlayer.setSurface(surface);
-            mMediaPlayer.setLooping(true);
+            mMediaPlayer.setLooping(false);
 
             float leftVolume = 1, rightVolume = 1;
 
