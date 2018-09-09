@@ -71,13 +71,6 @@ public class HostActivity extends AppCompatActivity {
                             clientsInfo.add(new DeviceInfo(thisClient.getString("id"), thisClient.getString("name")));
                         }
 
-                        int currposition = 1; // 0 to 3
-                        ArrayList<DeviceGridPositionInfo.SingleDevicePosition> devicePositions = new ArrayList<>();
-                        for (DeviceInfo currDevice : clientsInfo) {
-                            DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(currDevice.getId(), currposition/2, currposition % 2);
-                            devicePositions.add(currDevicePosition);
-                            currposition++;
-                        }
                         /*
                         DeviceGridPositionInfo deviceGridPositionInfo = new DeviceGridPositionInfo(2, 2, devicePositions);
                         Gson gson = new Gson();
