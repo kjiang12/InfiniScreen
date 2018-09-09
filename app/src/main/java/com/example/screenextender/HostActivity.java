@@ -68,6 +68,10 @@ public class HostActivity extends AppCompatActivity {
                             JSONObject thisClient = (JSONObject) clients.get(i);
                             clientsInfo.add(new DeviceInfo(thisClient.getString("id"), thisClient.getString("name")));
                         }
+
+
+
+                        /*
                         Intent intent = new Intent(HostActivity.this, GridViewImageTextActivity.class);
                         Bundle b = new Bundle();
 
@@ -77,6 +81,7 @@ public class HostActivity extends AppCompatActivity {
 
                         //Intent intent = new Intent(this, ClientManagementActivity.class);
                         startActivity(intent);
+                        */
 
                         Log.d("antli", "retrieved clients");
                     } catch (JSONException e) {
