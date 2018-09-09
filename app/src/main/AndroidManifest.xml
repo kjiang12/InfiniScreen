@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="AIzaSyBwgKWFdLNBmLOti4TCTsy29FnK7V-Nnr8" />
+
         <activity
             android:name=".GridViewImageTextActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -35,21 +40,22 @@
         </activity>
         <activity
             android:name=".ClientActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".HostActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".VideoCropActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_video_crop"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="landscape"
-            ></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".clientmanager.ClientManagementActivity"
+            android:label="@string/title_activity_client_management"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
