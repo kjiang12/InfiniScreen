@@ -15,8 +15,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.screenextender.GridViewImageTextActivity;
 import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
 
@@ -50,6 +48,17 @@ public class GraphFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public int getNumCols() {
+        return numCols;
+    }
+
+    private int numRows;
+    private int numCols;
 
     private OnFragmentInteractionListener mListener;
 
@@ -114,16 +123,21 @@ public class GraphFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
        ArrayList<HostActivity.DeviceInfo> clientsList = getArguments().getParcelableArrayList("clientlist");
 
-       final String[] phoneNames = new String[clientsList.size()];
-       final String[] phoneIds = new String[clientsList.size()];
+       final String[] phoneNames = new String[clientsList.size()+1];
+       final String[] phoneIds = new String[clientsList.size()+1];
        for (int i = 0; i < clientsList.size(); i++) {
            phoneNames[i] = clientsList.get(i).getName();
            phoneIds[i] = clientsList.get(i).getId();
        }
+       phoneNames[clientsList.size()] = "Host";
+       phoneIds[clientsList.size()] = "Host";
+
 
         rowsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_rows);
         colsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_cols);
-        generateGrid();
+        numCols = colsQuantityView.getQuantity();
+        numRows = rowsQuantityView.getQuantity();
+        generateGrid(phoneNames, phoneIds);
 
         QuantityView.OnQuantityChangeListener quantityChangeListener = new QuantityView.OnQuantityChangeListener() {
             @Override
@@ -224,5 +238,13 @@ public class GraphFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public String[] getIds(){
+        String[] phoneIdsInOrder = new String[adapterViewAndroid.getSelectedPhones().size()];
+        for (String s : adapterViewAndroid.getSelectedPhones().keySet()) {
+            phoneIdsInOrder[adapterViewAndroid.getSelectedPhones().get(s)] = s;
+        }
+        return phoneIdsInOrder;
     }
 }

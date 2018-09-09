@@ -1,5 +1,6 @@
 package com.example.screenextender.clientmanager;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -23,9 +24,18 @@ import android.widget.Toast;
 import com.example.screenextender.DeviceGridPositionInfo;
 import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
+import com.example.screenextender.VideoCropAdminActivity;
 import com.example.screenextender.clientmanager.clientgraph.GraphFragment;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.SimpleTimeZone;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
 public class ClientManagementActivity extends AppCompatActivity implements GraphFragment.OnFragmentInteractionListener, SourceSelectFragment.OnFragmentInteractionListener {
 
@@ -44,11 +54,19 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
      */
     private ViewPager mViewPager;
     protected Fragment graphFragment;
+    protected Fragment sourceFragment;
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("http://infiniscreen.herokuapp.com");
+        } catch (URISyntaxException e) {}
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Remove notification bar
+        mSocket.connect();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_client_management);
 
@@ -65,20 +83,56 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        graphFragment = new GraphFragment();
+        sourceFragment = new SourceSelectFragment();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (HostActivity.DeviceInfo currDevice : clientsInfo) {
-                    DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(currDevice.getId(), currposition/2, currposition % 2);
-                    devicePositions.add(currDevicePosition);
-                    currposition++;
+
+                GraphFragment graph = ((GraphFragment)graphFragment);
+                String[] ids = graph.getIds();
+                SourceSelectFragment source = (SourceSelectFragment)sourceFragment;
+                String source_url = source.getSource();
+                ArrayList<DeviceGridPositionInfo.SingleDevicePosition> devicePositions = new ArrayList<>();
+                int numRows = graph.getNumRows();
+                int numCols = graph.getNumCols();
+
+                Bundle b = new Bundle();
+                for (int i = 0; i<ids.length; i++) {
+                    if (ids[i].equals("Host")) {
+                        float width = 1.0f/numCols,
+                              height = 1.0f/numRows;
+                        b.putFloat("xOrigin", (i % numCols) * width);
+                        b.putFloat("yOrigin", (i / numRows) * height);
+                        b.putFloat("width", 1.0f/numCols);
+                        b.putFloat("height", 1.0f/numRows);
+                    } else {
+                        DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(ids[i], i / numRows, i % numCols);
+                        devicePositions.add(currDevicePosition);
+                    }
                 }
-                Toast.makeText(getBaseContext(), "Play Source", Toast.LENGTH_SHORT).show();
+
+                DeviceGridPositionInfo deviceGridPositionInfo = new DeviceGridPositionInfo(numRows, numCols, devicePositions);
+                Gson gson = new Gson();
+                try {
+                    JSONObject obj = new JSONObject(gson.toJson(deviceGridPositionInfo));
+                    mSocket.emit("positions", obj);
+                } catch (JSONException e) {
+
+                }
+                Intent intent = new Intent(ClientManagementActivity.this, VideoCropAdminActivity.class);
+                intent.putExtras(b);
+                startActivity(intent);
+
+
+
+
+                //Toast.makeText(getBaseContext(), "Play Source", Toast.LENGTH_SHORT).show();
             }
         });
 
-        graphFragment = new GraphFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("clientlist", getIntent().getExtras().getParcelableArrayList("clientlist"));
         graphFragment.setArguments(bundle);
@@ -157,9 +211,9 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new GraphFragment();
+                    return graphFragment;
                 case 1:
-                    return new SourceSelectFragment();
+                    return sourceFragment;
             }
             return null;
         }

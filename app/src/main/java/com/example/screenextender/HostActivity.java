@@ -78,7 +78,7 @@ public class HostActivity extends AppCompatActivity {
                             devicePositions.add(currDevicePosition);
                             currposition++;
                         }
-
+                        /*
                         DeviceGridPositionInfo deviceGridPositionInfo = new DeviceGridPositionInfo(2, 2, devicePositions);
                         Gson gson = new Gson();
                         try {
@@ -87,19 +87,16 @@ public class HostActivity extends AppCompatActivity {
                         } catch (JSONException e) {
 
                         }
-
+                        */
 
 
                         Intent intent = new Intent(HostActivity.this, ClientManagementActivity.class);
 
                         Bundle b = new Bundle();
                         b.putParcelableArrayList("clientlist", clientsInfo);
-                        /*
-                        b.putFloat("xOrigin", 0f);
-                        b.putFloat("yOrigin", 0f);
-                        b.putFloat("width", 0.5f);
-                        b.putFloat("height", 0.5f);
-                        */
+
+
+
                         intent.putExtras(b);
                         startActivity(intent);
 
