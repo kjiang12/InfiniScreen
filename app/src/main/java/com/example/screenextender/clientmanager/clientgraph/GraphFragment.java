@@ -14,8 +14,10 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -107,6 +109,12 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ArrayList<HostActivity.DeviceInfo> clientsList = getArguments().getParcelableArrayList("clientlist");
+
+        final String[] phoneNames = new String[clientsList.size()];
+        for (int i = 0; i < clientsList.size(); i++) {
+            phoneNames[i] = clientsList.get(i).getName();
+        }
 
         rowsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_rows);
         colsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_cols);
