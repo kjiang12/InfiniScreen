@@ -10,9 +10,21 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
 import java.io.File;
+import java.net.URISyntaxException;
 
 public class VideoLoadActivity extends AppCompatActivity {
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("http://infiniscreen.herokuapp.com");
+        } catch (URISyntaxException e) {}
+    }
+
 
     DownloadManager downloadManager;
     BroadcastReceiver onComplete;
@@ -46,6 +58,8 @@ public class VideoLoadActivity extends AppCompatActivity {
                 if(referenceId == refid) {
                     runOnUiThread(new Runnable() {
                         public void run() {
+                            mSocket.emit("ready");
+
                             Intent intent = new Intent(VideoLoadActivity.this, VideoCropActivity.class);
 
                             Bundle b = new Bundle();
