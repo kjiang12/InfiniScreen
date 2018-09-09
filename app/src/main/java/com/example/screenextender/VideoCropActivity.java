@@ -1,5 +1,6 @@
 package com.example.screenextender;
 
+
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -14,8 +15,11 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.widget.FrameLayout;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URISyntaxException;
 
 public class VideoCropActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
