@@ -15,8 +15,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.screenextender.GridViewImageTextActivity;
 import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
 
@@ -230,5 +228,9 @@ public class GraphFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public String[] getIds(){
+        return null;
     }
 }

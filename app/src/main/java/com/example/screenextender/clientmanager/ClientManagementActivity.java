@@ -25,6 +25,7 @@ import com.example.screenextender.R;
 import com.example.screenextender.clientmanager.clientgraph.GraphFragment;
 
 import java.util.ArrayList;
+import java.util.SimpleTimeZone;
 
 public class ClientManagementActivity extends AppCompatActivity implements GraphFragment.OnFragmentInteractionListener, SourceSelectFragment.OnFragmentInteractionListener {
 
@@ -43,6 +44,7 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
      */
     private ViewPager mViewPager;
     protected Fragment graphFragment;
+    protected Fragment sourceFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +66,21 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        graphFragment = new GraphFragment();
+        sourceFragment = new SourceSelectFragment();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GraphFragment graph = ((GraphFragment)graphFragment);
+                String[] ids = graph.getIds();
+                SourceSelectFragment source = (SourceSelectFragment)sourceFragment;
+                String source_url = source.getSource();
                 Toast.makeText(getBaseContext(), "Play Source", Toast.LENGTH_SHORT).show();
             }
         });
 
-        graphFragment = new GraphFragment();
         Bundle bundle = new Bundle();
         //bundle.putParcelableArrayList("clientlist", getIntent().getExtras().getParcelableArrayList("clientlist"));
         graphFragment.setArguments(bundle);
@@ -151,9 +159,9 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new GraphFragment();
+                    return graphFragment;
                 case 1:
-                    return new SourceSelectFragment();
+                    return sourceFragment;
             }
             return null;
         }
