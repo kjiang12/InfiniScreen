@@ -24,6 +24,8 @@ import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
 import com.example.screenextender.clientmanager.clientgraph.GraphFragment;
 
+import java.util.ArrayList;
+
 public class ClientManagementActivity extends AppCompatActivity implements GraphFragment.OnFragmentInteractionListener, SourceSelectFragment.OnFragmentInteractionListener {
 
     /**
@@ -72,8 +74,8 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
 
         graphFragment = new GraphFragment();
         Bundle bundle = new Bundle();
-        
-        ArrayList<HostActivity.DeviceInfo> clientsList = getIntent().getExtras().getParcelableArrayList("clientlist");
+        bundle.putParcelableArrayList("clientlist", getIntent().getExtras().getParcelableArrayList("clientlist"));
+        graphFragment.setArguments(bundle);
 
     }
 

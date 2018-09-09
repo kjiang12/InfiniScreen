@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.view.WindowManager;
 
 
+import com.example.screenextender.clientmanager.ClientManagementActivity;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.github.nkzawa.socketio.client.IO;
@@ -71,8 +72,8 @@ public class HostActivity extends AppCompatActivity {
 
 
 
-                        /*
-                        Intent intent = new Intent(HostActivity.this, GridViewImageTextActivity.class);
+
+                        Intent intent = new Intent(HostActivity.this, ClientManagementActivity.class);
                         Bundle b = new Bundle();
 
                         b.putParcelableArrayList("clientlist", clientsInfo);
@@ -81,7 +82,7 @@ public class HostActivity extends AppCompatActivity {
 
                         //Intent intent = new Intent(this, ClientManagementActivity.class);
                         startActivity(intent);
-                        */
+
 
                         Log.d("antli", "retrieved clients");
                     } catch (JSONException e) {
