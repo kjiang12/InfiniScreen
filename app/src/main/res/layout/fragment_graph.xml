@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".clientmanager.GraphFragment">
+    tools:context=".clientmanager.clientgraph.GraphFragment">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -77,10 +77,18 @@
 
                 <GridView
                     android:id="@+id/grid_view_image_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:columnWidth="110dp"
-                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:padding="0dp"
+                    android:verticalSpacing="2dp"
+                    android:horizontalSpacing="2dp"
+                    android:scrollingCache="true"
+                    android:smoothScrollbar="true"
+                    android:clipChildren="true"
+                    android:alwaysDrawnWithCache="true"
+                    android:columnWidth="100dp"
+                    android:stretchMode="columnWidth"
+                    android:gravity="center_horizontal"
                     android:numColumns="4" />
             </LinearLayout>
 
