@@ -78,7 +78,8 @@ public class VideoLoadActivity extends AppCompatActivity {
         };
 
         // delete the previous video file
-        File file1 = new File(Environment.DIRECTORY_DOWNLOADS, "/Infiniscreen/vid.mp4");
+        File file0 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file1 = new File(file0, "Infiniscreen/vid.mp4");
         if(file1.exists()) {
             file1.delete();
         }

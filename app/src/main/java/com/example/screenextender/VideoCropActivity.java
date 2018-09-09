@@ -19,6 +19,7 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -143,10 +144,15 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i2) {
         Surface surface = new Surface(surfaceTexture);
 
+        File file0 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file1 = new File(file0, "Infiniscreen/vid.mp4");
+
+        String path = file1.getAbsolutePath();
+
         try {
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer
-                    .setDataSource(Environment.DIRECTORY_DOWNLOADS + "/Infiniscreen/vid.mp4");
+                    .setDataSource(path);
             mMediaPlayer.setSurface(surface);
             mMediaPlayer.setLooping(false);
 

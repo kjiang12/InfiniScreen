@@ -20,7 +20,7 @@ public class VideoCropAdminActivity extends VideoCropActivity implements Texture
                     case MotionEvent.ACTION_UP:
 
                         if(!prepared) break;
-                        
+
                         if(!playing) {
 
                             mSocket.emit("play_command");
