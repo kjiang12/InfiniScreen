@@ -19,6 +19,7 @@ import com.google.android.gms.nearby.messages.Message;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.emitter.Emitter;
+import com.google.gson.Gson;
 
 
 import org.json.JSONArray;
@@ -69,6 +70,22 @@ public class HostActivity extends AppCompatActivity {
                             clientsInfo.add(new DeviceInfo(thisClient.getString("id"), thisClient.getString("name")));
                         }
 
+                        int currposition = 0; // 0 to 3
+                        ArrayList<DeviceGridPositionInfo.SingleDevicePosition> devicePositions = new ArrayList<>();
+                        for (DeviceInfo currDevice : clientsInfo) {
+                            DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(currDevice.getId(), currposition/2, currposition % 2);
+                            devicePositions.add(currDevicePosition);
+                            currposition++;
+                        }
+
+                        DeviceGridPositionInfo deviceGridPositionInfo = new DeviceGridPositionInfo(2, 2, devicePositions);
+                        Gson gson = new Gson();
+                        try {
+                            JSONObject obj = new JSONObject(gson.toJson(deviceGridPositionInfo));
+                            mSocket.emit("positions", obj);
+                        } catch (JSONException e) {
+
+                        }
 
 
                         /*
