@@ -28,6 +28,9 @@
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
             android:value="AIzaSyBwgKWFdLNBmLOti4TCTsy29FnK7V-Nnr8" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".MainActivity"
@@ -61,6 +64,10 @@
         <activity
             android:name=".clientmanager.ClientManagementActivity"
             android:label="@string/title_activity_client_management"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".VideoLoadActivity"
+            android:label="@string/title_activity_video_load"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -39,13 +39,13 @@
                 android:layout_height="163dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="0"
-                android:fontFamily="sans-serif-condensed"
+                android:fontFamily="@font/raleway_extralight"
                 android:gravity="center"
                 android:text="@string/title"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@android:color/holo_blue_bright"
-                android:textSize="81sp" />
+                android:textSize="65sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                     android:layout_weight="1"
 
                     android:backgroundTint="@android:color/holo_blue_dark"
-                    android:fontFamily="sans-serif-condensed"
+                    android:fontFamily="@font/raleway_light"
                     android:onClick="switchToHost"
                     android:text="Host"
                     android:textColor="@android:color/white"
@@ -80,7 +80,7 @@
                     android:layout_weight="1"
 
                     android:backgroundTint="@android:color/holo_blue_dark"
-                    android:fontFamily="sans-serif-condensed"
+                    android:fontFamily="@font/raleway_light"
                     android:onClick="switchToClient"
                     android:text="Join"
                     android:textColor="@android:color/white"
