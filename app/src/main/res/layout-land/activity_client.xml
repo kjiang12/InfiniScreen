@@ -15,6 +15,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="9dp"
         app:cardBackgroundColor="@android:color/holo_blue_bright"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

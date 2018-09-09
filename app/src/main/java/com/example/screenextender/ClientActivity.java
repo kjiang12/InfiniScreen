@@ -2,6 +2,10 @@ package com.example.screenextender;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -94,6 +98,7 @@ public class ClientActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Nearby.getMessagesClient(this).subscribe(mMessageListener);
+
     }
 
     @Override
