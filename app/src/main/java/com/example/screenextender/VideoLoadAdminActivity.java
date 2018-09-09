@@ -10,13 +10,38 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
+
 import java.io.File;
 
-public class VideoLoadActivity extends AppCompatActivity {
+public class VideoLoadAdminActivity extends AppCompatActivity {
 
-    DownloadManager downloadManager;
-    BroadcastReceiver onComplete;
-    long refid;
+    private boolean oneIsDone = false;
+
+    private Socket mSocket;
+    private DownloadManager downloadManager;
+    private BroadcastReceiver onComplete;
+    private long refid;
+
+    private Intent nextIntent;
+    private Bundle nextBundle;
+
+    private Emitter.Listener onAllReady = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(oneIsDone) {
+                        startActivity(nextIntent);
+                    } else {
+                        oneIsDone = true;
+                    }
+                }
+            });
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +52,20 @@ public class VideoLoadActivity extends AppCompatActivity {
         //xOrigin = getIntent().getExtras().getFloat("xOrigin");
         //yOrigin = getIntent().getExtras().getFloat("yOrigin");
 
+        mSocket.on("all_ready", onAllReady);
+
+
         String convertedUrl = getIntent().getExtras().getString("convertedUrl");
+
+        nextIntent = new Intent(VideoLoadAdminActivity.this, VideoCropAdminActivity.class);
+
+        nextBundle = new Bundle();
+        nextBundle.putFloat("xOrigin", getIntent().getExtras().getFloat("xOrigin"));
+        nextBundle.putFloat("yOrigin", getIntent().getExtras().getFloat("yOrigin"));
+        nextBundle.putFloat("width", getIntent().getExtras().getFloat("width"));
+        nextBundle.putFloat("height", getIntent().getExtras().getFloat("height"));
+
+        nextIntent.putExtras(nextBundle);
 
         Uri downloadUri = Uri.parse("convertedUrl");
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
@@ -46,20 +84,14 @@ public class VideoLoadActivity extends AppCompatActivity {
                 if(referenceId == refid) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            Intent intent = new Intent(VideoLoadActivity.this, VideoCropActivity.class);
-
-                            Bundle b = new Bundle();
-                            b.putFloat("xOrigin", getIntent().getExtras().getFloat("xOrigin"));
-                            b.putFloat("yOrigin", getIntent().getExtras().getFloat("yOrigin"));
-                            b.putFloat("width", getIntent().getExtras().getFloat("width"));
-                            b.putFloat("height", getIntent().getExtras().getFloat("height"));
-
-                            intent.putExtras(b);
-                            startActivity(intent);
+                            if(oneIsDone) {
+                                startActivity(nextIntent);
+                            } else {
+                                oneIsDone = true;
+                            }
                         }
                     });
                 }
-
             }
         };
 
@@ -85,4 +117,6 @@ public class VideoLoadActivity extends AppCompatActivity {
 
         unregisterReceiver(onComplete);
     }
+
+
 }

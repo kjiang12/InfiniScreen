@@ -69,6 +69,10 @@
             android:name=".VideoLoadActivity"
             android:label="@string/title_activity_video_load"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".VideoLoadAdminActivity"
+            android:label="@string/title_activity_video_load"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
