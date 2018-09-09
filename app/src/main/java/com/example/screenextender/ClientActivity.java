@@ -53,7 +53,7 @@ public class ClientActivity extends AppCompatActivity {
                     b.putFloat("yOrigin", yOrigin);
                     b.putFloat("width", width);
                     b.putFloat("height", height);
-                    b.putString("convertedUrl", url);
+                    b.putString("converted_url", url);
                     intent.putExtras(b);
                     startActivity(intent);
                 }
