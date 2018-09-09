@@ -149,7 +149,6 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 2;
         }
     }
