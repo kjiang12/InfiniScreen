@@ -109,12 +109,12 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        ArrayList<HostActivity.DeviceInfo> clientsList = getArguments().getParcelableArrayList("clientlist");
+       // ArrayList<HostActivity.DeviceInfo> clientsList = getArguments().getParcelableArrayList("clientlist");
 
-        final String[] phoneNames = new String[clientsList.size()];
-        for (int i = 0; i < clientsList.size(); i++) {
-            phoneNames[i] = clientsList.get(i).getName();
-        }
+       // final String[] phoneNames = new String[clientsList.size()];
+       // for (int i = 0; i < clientsList.size(); i++) {
+       //     phoneNames[i] = clientsList.get(i).getName();
+       // }
 
         rowsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_rows);
         colsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_cols);
