@@ -63,7 +63,7 @@ public class VideoLoadAdminActivity extends AppCompatActivity {
         mSocket.on("all_ready", onAllReady);
 
 
-        String convertedUrl = getIntent().getExtras().getString("convertedUrl");
+        String convertedUrl = getIntent().getExtras().getString("converted_url");
 
         nextIntent = new Intent(VideoLoadAdminActivity.this, VideoCropAdminActivity.class);
 
@@ -75,7 +75,7 @@ public class VideoLoadAdminActivity extends AppCompatActivity {
 
         nextIntent.putExtras(nextBundle);
 
-        Uri downloadUri = Uri.parse("convertedUrl");
+        Uri downloadUri = Uri.parse(convertedUrl);
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.setAllowedOverRoaming(false);

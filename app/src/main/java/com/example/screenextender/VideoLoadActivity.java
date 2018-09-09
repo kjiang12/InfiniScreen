@@ -27,9 +27,9 @@ public class VideoLoadActivity extends AppCompatActivity {
         //xOrigin = getIntent().getExtras().getFloat("xOrigin");
         //yOrigin = getIntent().getExtras().getFloat("yOrigin");
 
-        String convertedUrl = getIntent().getExtras().getString("convertedUrl");
+        String convertedUrl = getIntent().getExtras().getString("converted_url");
 
-        Uri downloadUri = Uri.parse("convertedUrl");
+        Uri downloadUri = Uri.parse(convertedUrl);
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.setAllowedOverRoaming(false);
