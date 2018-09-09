@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -98,7 +99,6 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
         mSocket.on("pause", onPauseReceived);
         mSocket.connect();
 
-
         Bundle b = getIntent().getExtras();
         xOrigin = b.getFloat("xOrigin");
         yOrigin = b.getFloat("yOrigin");
@@ -123,6 +123,8 @@ public class VideoCropActivity extends AppCompatActivity implements TextureView.
 
         mTextureView.setSurfaceTextureListener(this);
         mTextureView.setLayoutParams(new FrameLayout.LayoutParams(screenWidth, screenHeight));
+
+        mTextureView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         updateCropToDim(xOrigin, yOrigin, width, height);
     }
