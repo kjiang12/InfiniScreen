@@ -1,5 +1,6 @@
 package com.example.screenextender;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -128,18 +129,43 @@ public class GridViewImageTextActivity extends AppCompatActivity {
         });
     }
 
-    private void showPhoneSelectionDialog(final String[] phoneNames, final int index) {
-        final HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
-        new AlertDialog.Builder(this)
-                .setTitle("Pick phone to go in slot # "+(index + 1))
-                //.setMessage("Pick phone to go in slot # "+(index + 1))
-                .setItems(phoneNames, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        gridViewString[index] = phoneNames[which];
-                        TextView newTextView = adapterViewAndroid.getTextFields().get(index);
-                        newTextView.setText(phoneNames[which]);
-                        adapterViewAndroid.getTextFields().put(index, newTextView);
 
+
+    private void showPhoneSelectionDialog(final String[] phoneNames, final int index) {
+        final Context context = this;
+        this.runOnUiThread(new Runnable() {
+            public void run()
+            {
+
+                final HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
+                new AlertDialog.Builder(context)
+                        .setTitle("Pick phone to go in slot # "+(index + 1))
+                        //.setMessage("Pick phone to go in slot # "+(index + 1))
+                        .setItems(phoneNames, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Toast.makeText(GridViewImageTextActivity.this, "GridView Item: " + index, Toast.LENGTH_LONG).show();
+
+                                gridViewString[index] = phoneNames[which];
+                                HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
+                                TextView newTextView = textFields.get(index);
+                                newTextView.setText(phoneNames[which]);
+                                textFields.put(index, newTextView);
+                                Toast.makeText(GridViewImageTextActivity.this,  phoneNames[which] + adapterViewAndroid.getSelectedPhones().get(phoneNames[which]), Toast.LENGTH_LONG).show();
+                                adapterViewAndroid.setTextFields(textFields);
+
+                                if (adapterViewAndroid.getSelectedPhones().containsKey(phoneNames[which])) {
+                                    HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
+                                    TextView selectTextView = textFields.get(selectedPhones.get(phoneNames[which]));
+                                    selectTextView.setText("Selected...");
+                                    textFields.put(index, selectTextView);
+                                    adapterViewAndroid.setTextFields(textFields);
+                                    selectedPhones.put(phoneNames[which], index);
+                                    adapterViewAndroid.setSelectedPhones(selectedPhones);
+                                } else {
+                                    HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
+                                    selectedPhones.put(phoneNames[which], index);
+                                    adapterViewAndroid.setSelectedPhones(selectedPhones);
+                                }
                         /*for (Integer key : adapterViewAndroid.getTextFields().keySet()) {
                             if (adapterViewAndroid.getTextFields().get(key).getText().toString().equals(phoneNames[which]) && (key != index)) {
                                 TextView selectTextView = adapterViewAndroid.getTextFields().get(index);
@@ -148,25 +174,35 @@ public class GridViewImageTextActivity extends AppCompatActivity {
                             }
                         }*/
 
-                    }
-                })
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Log.d("MainActivity", "Sending atomic bombs to Jupiter");
-                        adapterViewAndroid.getTextFields().get(index).setText(phoneNames[which]);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Log.d("MainActivity", "Aborting mission...");
-                        gridViewString[index] = "Select...";
-                        adapterViewAndroid.getTextFields().get(index).setText(gridViewString[index]);
-                    }
-                })
-                .show();
-    }
+                            }
+                        })
+//                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //Log.d("MainActivity", "Sending atomic bombs to Jupiter");
+//                        //adapterViewAndroid.getTextFields().get(index).setText(phoneNames[which]);
+//                    }
+//                })
+//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //Log.d("MainActivity", "Aborting mission...");
+//                        gridViewString[index] = "Select...";
+//                        HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
+//                        HashMap<Integer, TextView> textFields = adapterViewAndroid.getTextFields();
+//                        TextView newTextView = textFields.get(index);
+//                        String text = newTextView.getText().toString();
+//                        selectedPhones.remove(text);
+//                        newTextView.setText("Select...");
+//                        adapterViewAndroid.setSelectedPhones(selectedPhones);
+//                    }
+//                })
+                        .show();
+            }
+        });
+
+
+    };
 
 
 }

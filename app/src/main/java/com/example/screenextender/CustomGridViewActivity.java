@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -16,12 +17,15 @@ public class CustomGridViewActivity extends BaseAdapter {
     private final String[] gridViewString;
     private final int[] gridViewImageId;
     private HashMap<Integer, TextView> textFields;
+    private HashMap<String, Integer> selectedPhones;
 
     public CustomGridViewActivity(Context context, String[] gridViewString, int[] gridViewImageId) {
         mContext = context;
         this.gridViewImageId = gridViewImageId;
         this.gridViewString = gridViewString;
         textFields = new HashMap<Integer, TextView>();
+        selectedPhones = new HashMap<String, Integer>();
+
     }
 
     @Override
@@ -63,5 +67,17 @@ public class CustomGridViewActivity extends BaseAdapter {
 
     public HashMap<Integer, TextView> getTextFields() {
         return textFields;
+    }
+
+    public void setTextFields(HashMap<Integer, TextView> newTextFields) {
+        textFields.putAll(newTextFields);
+    }
+
+    public HashMap<String, Integer> getSelectedPhones() {
+        return selectedPhones;
+    }
+
+    public void setSelectedPhones(HashMap<String, Integer> newSelectedPhones) {
+        selectedPhones.putAll(newSelectedPhones);
     }
 }
