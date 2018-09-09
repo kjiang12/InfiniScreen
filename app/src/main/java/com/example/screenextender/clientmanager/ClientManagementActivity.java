@@ -54,6 +54,7 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
     private Socket mSocket;
     private Intent intent;
     private Bundle intentBundle;
+    private FloatingActionButton fab;
 
     {
         try {
@@ -102,11 +103,11 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         graphFragment = new GraphFragment();
         sourceFragment = new SourceSelectFragment();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                fab.setEnabled(false);
                 GraphFragment graph = ((GraphFragment)graphFragment);
                 String[] ids = graph.getIds();
                 SourceSelectFragment source = (SourceSelectFragment)sourceFragment;

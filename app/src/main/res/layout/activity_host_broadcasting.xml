@@ -55,8 +55,8 @@
 
             <Button
                 android:id="@+id/client_join_finished_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/holo_red_dark"
                 android:elevation="4dp"
