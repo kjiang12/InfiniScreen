@@ -74,7 +74,7 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
 
         graphFragment = new GraphFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("clientlist", getIntent().getExtras().getParcelableArrayList("clientlist"));
+        //bundle.putParcelableArrayList("clientlist", getIntent().getExtras().getParcelableArrayList("clientlist"));
         graphFragment.setArguments(bundle);
 
     }
