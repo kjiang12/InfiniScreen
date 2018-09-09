@@ -43,6 +43,7 @@
                         android:id="@+id/rowstext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="Rows" />
                 </me.himanshusoni.quantityview.QuantityView>
@@ -61,6 +62,7 @@
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="Cols" />
                 </me.himanshusoni.quantityview.QuantityView>
