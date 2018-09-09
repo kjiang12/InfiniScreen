@@ -128,7 +128,6 @@ public class GraphFragment extends Fragment {
     }
 
     private void generateGrid() {
-
         int numPhones = rowsQuantityView.getQuantity()*colsQuantityView.getQuantity();
         gridViewString = new String[numPhones];
         Arrays.fill(gridViewString, "Select...");
@@ -162,23 +161,9 @@ public class GraphFragment extends Fragment {
                         gridViewString[index] = phoneNames[which];
                         TextView newTextView = adapterViewAndroid.getTextFields().get(index);
                         newTextView.setText(phoneNames[which]);
+                        HashMap<Integer, TextView> a = adapterViewAndroid.getTextFields();
                         adapterViewAndroid.getTextFields().put(index, newTextView);
 
-                    }
-                })
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Log.d("MainActivity", "Sending atomic bombs to Jupiter");
-                        adapterViewAndroid.getTextFields().get(index).setText(phoneNames[which]);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Log.d("MainActivity", "Aborting mission...");
-                        gridViewString[index] = "Select...";
-                        adapterViewAndroid.getTextFields().get(index).setText(gridViewString[index]);
                     }
                 })
                 .show();
