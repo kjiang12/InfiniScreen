@@ -11,15 +11,23 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 public class VideoLoadAdminActivity extends AppCompatActivity {
 
     private boolean oneIsDone = false;
 
     private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("http://infiniscreen.herokuapp.com");
+        } catch (URISyntaxException e) {}
+    }
+
     private DownloadManager downloadManager;
     private BroadcastReceiver onComplete;
     private long refid;

@@ -7,8 +7,16 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Button"
-        />
+        tools:layout_editor_absoluteX="230dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="56dp"></LinearLayout>
 </android.support.constraint.ConstraintLayout>
