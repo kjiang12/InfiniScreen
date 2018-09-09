@@ -90,12 +90,16 @@ public class HostActivity extends AppCompatActivity {
 
 
 
-                        Intent intent = new Intent(HostActivity.this, VideoCropAdminActivity.class);
+                        Intent intent = new Intent(HostActivity.this, ClientManagementActivity.class);
+
                         Bundle b = new Bundle();
+                        b.putParcelableArrayList("clientlist", clientsInfo);
+                        /*
                         b.putFloat("xOrigin", 0f);
                         b.putFloat("yOrigin", 0f);
                         b.putFloat("width", 0.5f);
                         b.putFloat("height", 0.5f);
+                        */
                         intent.putExtras(b);
                         startActivity(intent);
 

@@ -112,12 +112,14 @@ public class GraphFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-       // ArrayList<HostActivity.DeviceInfo> clientsList = getArguments().getParcelableArrayList("clientlist");
+       ArrayList<HostActivity.DeviceInfo> clientsList = getArguments().getParcelableArrayList("clientlist");
 
-       // final String[] phoneNames = new String[clientsList.size()];
-       // for (int i = 0; i < clientsList.size(); i++) {
-       //     phoneNames[i] = clientsList.get(i).getName();
-       // }
+       final String[] phoneNames = new String[clientsList.size()];
+       final String[] phoneIds = new String[clientsList.size()];
+       for (int i = 0; i < clientsList.size(); i++) {
+           phoneNames[i] = clientsList.get(i).getName();
+           phoneIds[i] = clientsList.get(i).getId();
+       }
 
         rowsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_rows);
         colsQuantityView=(QuantityView)getView().findViewById(R.id.quantityView_cols);
@@ -126,7 +128,7 @@ public class GraphFragment extends Fragment {
         QuantityView.OnQuantityChangeListener quantityChangeListener = new QuantityView.OnQuantityChangeListener() {
             @Override
             public void onQuantityChanged(int oldQuantity, int newQuantity, boolean programmatically) {
-                generateGrid();
+                generateGrid(phoneNames, phoneIds);
             }
 
             @Override
@@ -138,7 +140,7 @@ public class GraphFragment extends Fragment {
         colsQuantityView.setOnQuantityChangeListener(quantityChangeListener);
     }
 
-    private void generateGrid() {
+    private void generateGrid(final String[] phoneNames, final String[] phoneIds) {
         int numPhones = rowsQuantityView.getQuantity()*colsQuantityView.getQuantity();
         gridViewString = new String[numPhones];
         Arrays.fill(gridViewString, "Select...");
@@ -156,13 +158,13 @@ public class GraphFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
                 //Toast.makeText(GridViewImageTextActivity.this, "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
-                String[] testPhones = {"Test Phone 1", "Test Phone 2", "Test Phone 3", "Test Phone 4"};
-                showPhoneSelectionDialog(testPhones, i);
+                //String[] testPhones = {"Test Phone 1", "Test Phone 2", "Test Phone 3", "Test Phone 4"};
+                showPhoneSelectionDialog(phoneNames, phoneIds, i);
             }
         });
     }
 
-    private void showPhoneSelectionDialog(final String[] phoneNames, final int index) {
+    private void showPhoneSelectionDialog(final String[] phoneNames, final String[] phoneIds, final int index) {
         getActivity().runOnUiThread(new Runnable() {
             public void run()
             {
@@ -183,24 +185,16 @@ public class GraphFragment extends Fragment {
                                     newTextView.setText("Select...");
                                 }
                                 newTextView.setText(phoneNames[which]);
-                                if (adapterViewAndroid.getSelectedPhones().containsKey(phoneNames[which])) {
+                                if (adapterViewAndroid.getSelectedPhones().containsKey(phoneIds[which])) {
                                     //HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
                                     TextView selectTextView = textFields.get(selectedPhones.get(phoneNames[which]));
                                     selectTextView.setText("Select...");
                                     //selectedPhones.remove(phoneNames[which]);
-                                    selectedPhones.put(phoneNames[which], index);
+                                    selectedPhones.put(phoneIds[which], index);
                                 } else {
                                     //HashMap<String, Integer> selectedPhones = adapterViewAndroid.getSelectedPhones();
-                                    selectedPhones.put(phoneNames[which], index);
+                                    selectedPhones.put(phoneIds[which], index);
                                 }
-
-                                final Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                    }
-                                }, 5000);
 
                             }
                         })

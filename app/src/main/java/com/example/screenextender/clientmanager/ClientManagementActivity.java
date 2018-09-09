@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.screenextender.DeviceGridPositionInfo;
 import com.example.screenextender.HostActivity;
 import com.example.screenextender.R;
 import com.example.screenextender.clientmanager.clientgraph.GraphFragment;
@@ -68,13 +69,18 @@ public class ClientManagementActivity extends AppCompatActivity implements Graph
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                for (HostActivity.DeviceInfo currDevice : clientsInfo) {
+                    DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(currDevice.getId(), currposition/2, currposition % 2);
+                    devicePositions.add(currDevicePosition);
+                    currposition++;
+                }
                 Toast.makeText(getBaseContext(), "Play Source", Toast.LENGTH_SHORT).show();
             }
         });
 
         graphFragment = new GraphFragment();
         Bundle bundle = new Bundle();
-        //bundle.putParcelableArrayList("clientlist", getIntent().getExtras().getParcelableArrayList("clientlist"));
+        bundle.putParcelableArrayList("clientlist", getIntent().getExtras().getParcelableArrayList("clientlist"));
         graphFragment.setArguments(bundle);
 
     }
