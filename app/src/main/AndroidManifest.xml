@@ -53,6 +53,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
+            android:name=".VideoCropAdminActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_video_crop"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".clientmanager.ClientManagementActivity"
             android:label="@string/title_activity_client_management"
             android:theme="@style/AppTheme.NoActionBar"></activity>
