@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Video Source Link"
-                android:text="https://www.youtube.com/watch?v=8iKdrsCtdoU" />
+                android:text="https://www.youtube.com/watch?v=62iu37ZuMnw" />
         </android.support.design.widget.TextInputLayout>
     </android.support.v7.widget.CardView>
 
