@@ -59,14 +59,20 @@ public class GridViewImageTextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gridview_image_text_example);
+        ArrayList<HostActivity.DeviceInfo> clientsList = getIntent().getExtras().getParcelableArrayList("clientlist");
+        final String[] phoneNames = new String[clientsList.size()];
+        for (int i = 0; i < clientsList.size(); i++) {
+            phoneNames[i] = clientsList.get(i).getName();
+        }
+
         rowsQuantityView=(QuantityView)findViewById(R.id.quantityView_rows);
         colsQuantityView=(QuantityView)findViewById(R.id.quantityView_cols);
-        generateGrid();
+        generateGrid(phoneNames);
 
         QuantityView.OnQuantityChangeListener quantityChangeListener = new QuantityView.OnQuantityChangeListener() {
             @Override
             public void onQuantityChanged(int oldQuantity, int newQuantity, boolean programmatically) {
-                generateGrid();
+                generateGrid(phoneNames);
             }
 
             @Override
@@ -103,7 +109,7 @@ public class GridViewImageTextActivity extends AppCompatActivity {
 
     }
 
-    private void generateGrid() {
+    private void generateGrid(final String[] phoneNames) {
 
         int numPhones = rowsQuantityView.getQuantity()*colsQuantityView.getQuantity();
         gridViewString = new String[numPhones];
@@ -122,8 +128,8 @@ public class GridViewImageTextActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
                 //Toast.makeText(GridViewImageTextActivity.this, "GridView Item: " + gridViewString[+i], Toast.LENGTH_LONG).show();
-                String[] testPhones = {"Test Phone 1", "Test Phone 2", "Test Phone 3"};
-                showPhoneSelectionDialog(testPhones, i);
+                //String[] testPhones = {"Test Phone 1", "Test Phone 2", "Test Phone 3"};
+                showPhoneSelectionDialog(phoneNames, i);
             }
         });
     }

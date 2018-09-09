@@ -1,6 +1,9 @@
 package com.example.screenextender;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -22,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -36,7 +40,7 @@ public class HostActivity extends AppCompatActivity {
             mSocket = IO.socket("http://infiniscreen.herokuapp.com");
         } catch (URISyntaxException e) {}
     }
-    private ArrayList<String> clientNames = new ArrayList<>();
+    private ArrayList<DeviceInfo> clientsInfo = new ArrayList<>();
 
     private Emitter.Listener onJoinCodeReceived = new Emitter.Listener() {
         @Override
@@ -62,10 +66,17 @@ public class HostActivity extends AppCompatActivity {
                         JSONArray clients = data.getJSONArray("clients");
                         for (int i = 0; i < clients.length(); i++) {
                             JSONObject thisClient = (JSONObject) clients.get(i);
-                            clientNames.add(thisClient.getString("name"));
+                            clientsInfo.add(new DeviceInfo(thisClient.getString("id"), thisClient.getString("name")));
                         }
-                        Log.d("antli", clientNames.toString());
+                        Intent intent = new Intent(HostActivity.this, GridViewImageTextActivity.class);
+                        Bundle b = new Bundle();
 
+                        b.putParcelableArrayList("clientlist", clientsInfo);
+                        //extras.put
+                        intent.putExtras(b);
+
+                        //Intent intent = new Intent(this, ClientManagementActivity.class);
+                        startActivity(intent);
 
                         Log.d("antli", "retrieved clients");
                     } catch (JSONException e) {
@@ -111,5 +122,49 @@ public class HostActivity extends AppCompatActivity {
     protected void sendMessage(String text){
         mMessage = new Message(text.getBytes());
         Nearby.getMessagesClient(this).publish(mMessage);
+    }
+
+    public static class DeviceInfo implements Parcelable {
+        String mId;
+        String mName;
+        public DeviceInfo(String id, String name) {
+            mId = id;
+            mName = name;
+        }
+        public String getId() {
+            return mId;
+        }
+        public String getName() {
+            return mName;
+        }
+
+        // parceling
+
+        public DeviceInfo(Parcel in) {
+            this.mId = in.readString();
+            this.mName = in.readString();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(this.mId);
+            parcel.writeString(this.mName);
+        }
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator<DeviceInfo>() {
+            @Override
+            public DeviceInfo createFromParcel(Parcel in) {
+                return new DeviceInfo(in);
+            }
+
+            public DeviceInfo[] newArray(int size) {
+                return new DeviceInfo[size];
+            }
+        };
     }
 }
