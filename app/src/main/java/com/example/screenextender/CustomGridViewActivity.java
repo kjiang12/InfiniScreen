@@ -8,16 +8,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 public class CustomGridViewActivity extends BaseAdapter {
 
     private Context mContext;
     private final String[] gridViewString;
     private final int[] gridViewImageId;
+    private HashMap<Integer, TextView> textFields;
 
     public CustomGridViewActivity(Context context, String[] gridViewString, int[] gridViewImageId) {
         mContext = context;
         this.gridViewImageId = gridViewImageId;
         this.gridViewString = gridViewString;
+        textFields = new HashMap<Integer, TextView>();
     }
 
     @Override
@@ -49,10 +53,15 @@ public class CustomGridViewActivity extends BaseAdapter {
             ImageView imageViewAndroid = (ImageView) gridViewAndroid.findViewById(R.id.android_gridview_image);
             textViewAndroid.setText(gridViewString[i]);
             imageViewAndroid.setImageResource(gridViewImageId[i]);
+            textFields.put(i, textViewAndroid);
         } else {
             gridViewAndroid = (View) convertView;
         }
 
         return gridViewAndroid;
+    }
+
+    public HashMap<Integer, TextView> getTextFields() {
+        return textFields;
     }
 }
