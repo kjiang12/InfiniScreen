@@ -2,6 +2,7 @@ package com.example.screenextender;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
@@ -44,11 +46,50 @@ public class ClientActivity extends AppCompatActivity {
         } catch (URISyntaxException e) {}
     }
 
+    private Emitter.Listener onVideoPositionReceived = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    float xOrigin = parseArg(args[0]);
+                    float yOrigin = parseArg(args[1]);
+                    float width = parseArg(args[2]);
+                    float height = parseArg(args[3]);
+                    Intent intent = new Intent(ClientActivity.this, VideoCropActivity.class);
+                    Bundle b = new Bundle();
+                    b.putFloat("xOrigin", xOrigin);
+                    b.putFloat("yOrigin", yOrigin);
+                    b.putFloat("width", width);
+                    b.putFloat("height", height);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
+            });
+        }
+    };
+
+    private float parseArg(Object argObject) {
+        if (argObject instanceof Double) {
+
+            double d = (Double) argObject;
+            return (float)d;
+        } else if (argObject instanceof Integer) {
+            int i =  (Integer) argObject;
+            return i;
+        }
+        else {
+            return -1.0f;
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        mSocket.on("position", onVideoPositionReceived);
         mSocket.connect();
         setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_client);
@@ -60,10 +101,6 @@ public class ClientActivity extends AppCompatActivity {
             setCompleted(new String(message.getContent()));
         }
 
-        @Override
-        public void onLost(Message message) {
-            setDisconnect();
-        }
     };
 
     @Override

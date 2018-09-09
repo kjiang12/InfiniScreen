@@ -71,7 +71,7 @@ public class HostActivity extends AppCompatActivity {
                             clientsInfo.add(new DeviceInfo(thisClient.getString("id"), thisClient.getString("name")));
                         }
 
-                        int currposition = 0; // 0 to 3
+                        int currposition = 1; // 0 to 3
                         ArrayList<DeviceGridPositionInfo.SingleDevicePosition> devicePositions = new ArrayList<>();
                         for (DeviceInfo currDevice : clientsInfo) {
                             DeviceGridPositionInfo.SingleDevicePosition currDevicePosition = new DeviceGridPositionInfo.SingleDevicePosition(currDevice.getId(), currposition/2, currposition % 2);
@@ -90,14 +90,13 @@ public class HostActivity extends AppCompatActivity {
 
 
 
-                        Intent intent = new Intent(HostActivity.this, ClientManagementActivity.class);
+                        Intent intent = new Intent(HostActivity.this, VideoCropActivity.class);
                         Bundle b = new Bundle();
-
-                        b.putParcelableArrayList("clientlist", clientsInfo);
-                        //extras.put
+                        b.putFloat("xOrigin", 0f);
+                        b.putFloat("yOrigin", 0f);
+                        b.putFloat("width", 0.5f);
+                        b.putFloat("height", 0.5f);
                         intent.putExtras(b);
-
-                        //Intent intent = new Intent(this, ClientManagementActivity.class);
                         startActivity(intent);
 
 
