@@ -4,18 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootView">
-
-    <TextView
-        android:layout_width="@dimen/texture_view_width"
-        android:layout_height="@dimen/texture_view_height"
-        android:gravity="center"
-        android:text="@string/Original_Video_Size"
-        android:textSize="@dimen/text_size_big"
-        android:background="@android:color/darker_gray"/>
-
     <TextureView
         android:id="@+id/textureView"
-        android:layout_width="@dimen/texture_view_width"
-        android:layout_height="@dimen/texture_view_height"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>
 
